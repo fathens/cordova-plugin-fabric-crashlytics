@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="org.fathens.cordova.plugin.fabric.Crashlytics" version="0.1.0" xmlns="http://www.phonegap.com/ns/plugins/1.0">
+	<name>Crashlytics</name>
+	<description>Cordova Plugin for Fabric/Crashlytics</description>
+	<license>MIT</license>
+	
+	<js-module name="CrashlyticsPlugin" src="www/crashlytics.js">
+		<clobbers target="plugin.crashlytics"/>
+	</js-module>
+	
+	<platform name="android">
+		<config-file parent="/*" target="res/xml/config.xml">
+			<feature name="CrashlyticsPlugin">
+				<param name="android-package" value="org.fathens.cordova.plugin.fabric.FabricPlugin"/>
+			</feature>
+		</config-file>
+		
+		<source-file src="platform/android/src/org/fathens/cordova/plugin/fabric/FabricPlugin.java" target-dir="src/org/fathens/cordova/plugin/fabric"/>
+		<source-file src="platform/android/src/org/fathens/cordova/plugin/fabric/FabricCrashlytics.java" target-dir="src/org/fathens/cordova/plugin/fabric"/>
+		<source-file src="platform/android/src/org/fathens/cordova/plugin/fabric/FabricAnswers.java" target-dir="src/org/fathens/cordova/plugin/fabric"/>
+	</platform>
+</plugin>
