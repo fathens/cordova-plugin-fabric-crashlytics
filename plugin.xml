@@ -4,8 +4,12 @@
 	<description>Cordova Plugin for Fabric/Crashlytics</description>
 	<license>MIT</license>
 	
-	<js-module name="CrashlyticsPlugin" src="www/crashlytics.js">
-		<clobbers target="plugin.crashlytics"/>
+	<js-module name="FabricCrashlyticsPlugin" src="www/crashlytics.js">
+		<clobbers target="plugin.Fabric.Crashlytics"/>
+	</js-module>
+	
+	<js-module name="FabricAnswersPlugin" src="www/answers.js">
+		<clobbers target="plugin.Fabric.Answers"/>
 	</js-module>
 	
 	<platform name="android">
