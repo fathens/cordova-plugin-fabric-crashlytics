@@ -1,2 +1,2 @@
-# Cordova-plugin-crashlytics
-Cordova Plugin for reporting logs and events for Fabric/Crashlytics, Answers
+# Cordova Plugin for Crashlytics
+Reporting Fabric/Crashlytics logs and Fabric/Answers events.
