@@ -1,4 +1,4 @@
-package org.fathens.cordova.plugin;
+package org.fathens.cordova.plugin.fabric;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

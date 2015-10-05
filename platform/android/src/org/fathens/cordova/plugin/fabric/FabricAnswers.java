@@ -1,4 +1,4 @@
-package org.fathens.cordova.plugin;
+package org.fathens.cordova.plugin.fabric;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -45,7 +45,7 @@ public class FabricAnswers {
 		}
 	}
 
-	static void putCustom(AnswersEvent<?> event, JSONObject custom) throws JSONException {
+	static public void putCustom(AnswersEvent<?> event, JSONObject custom) throws JSONException {
 		for (@SuppressWarnings("unchecked")
 		Iterator<String> iterator = custom.keys(); iterator.hasNext();) {
 			final String key = iterator.next();
@@ -57,7 +57,7 @@ public class FabricAnswers {
 		}
 	}
 
-	static Runnable eventPurchase(final JSONArray args, final CallbackContext context) throws JSONException {
+	static public Runnable eventPurchase(final JSONArray args, final CallbackContext context) throws JSONException {
 		final JSONObject obj = args.getJSONObject(0);
 		return new Runnable() {
 			public void run() {
@@ -87,7 +87,7 @@ public class FabricAnswers {
 		};
 	}
 
-	static Runnable eventAddToCart(final JSONArray args, final CallbackContext context) throws JSONException {
+	static public Runnable eventAddToCart(final JSONArray args, final CallbackContext context) throws JSONException {
 		final JSONObject obj = args.getJSONObject(0);
 		return new Runnable() {
 			public void run() {
@@ -115,7 +115,7 @@ public class FabricAnswers {
 		};
 	}
 
-	static Runnable eventStartCheckout(final JSONArray args, final CallbackContext context) throws JSONException {
+	static public Runnable eventStartCheckout(final JSONArray args, final CallbackContext context) throws JSONException {
 		final JSONObject obj = args.getJSONObject(0);
 		return new Runnable() {
 			public void run() {
@@ -139,7 +139,7 @@ public class FabricAnswers {
 		};
 	}
 
-	static Runnable eventContentView(final JSONArray args, final CallbackContext context) throws JSONException {
+	static public Runnable eventContentView(final JSONArray args, final CallbackContext context) throws JSONException {
 		final JSONObject obj = args.getJSONObject(0);
 		return new Runnable() {
 			public void run() {
@@ -163,7 +163,7 @@ public class FabricAnswers {
 		};
 	}
 
-	static Runnable eventSearch(final JSONArray args, final CallbackContext context) throws JSONException {
+	static public Runnable eventSearch(final JSONArray args, final CallbackContext context) throws JSONException {
 		final JSONObject obj = args.getJSONObject(0);
 		return new Runnable() {
 			public void run() {
@@ -183,7 +183,7 @@ public class FabricAnswers {
 		};
 	}
 
-	static Runnable eventShare(final JSONArray args, final CallbackContext context) throws JSONException {
+	static public Runnable eventShare(final JSONArray args, final CallbackContext context) throws JSONException {
 		final JSONObject obj = args.getJSONObject(0);
 		return new Runnable() {
 			public void run() {
@@ -209,7 +209,7 @@ public class FabricAnswers {
 		};
 	}
 
-	static Runnable eventRating(final JSONArray args, final CallbackContext context) throws JSONException {
+	static public Runnable eventRating(final JSONArray args, final CallbackContext context) throws JSONException {
 		final JSONObject obj = args.getJSONObject(0);
 		return new Runnable() {
 			public void run() {
@@ -235,7 +235,7 @@ public class FabricAnswers {
 		};
 	}
 
-	static Runnable eventSignUp(final JSONArray args, final CallbackContext context) throws JSONException {
+	static public Runnable eventSignUp(final JSONArray args, final CallbackContext context) throws JSONException {
 		final JSONObject obj = args.getJSONObject(0);
 		return new Runnable() {
 			public void run() {
@@ -257,7 +257,7 @@ public class FabricAnswers {
 		};
 	}
 
-	static Runnable eventLogin(final JSONArray args, final CallbackContext context) throws JSONException {
+	static public Runnable eventLogin(final JSONArray args, final CallbackContext context) throws JSONException {
 		final JSONObject obj = args.getJSONObject(0);
 		return new Runnable() {
 			public void run() {
@@ -279,7 +279,7 @@ public class FabricAnswers {
 		};
 	}
 
-	static Runnable eventInvite(final JSONArray args, final CallbackContext context) throws JSONException {
+	static public Runnable eventInvite(final JSONArray args, final CallbackContext context) throws JSONException {
 		final JSONObject obj = args.getJSONObject(0);
 		return new Runnable() {
 			public void run() {
@@ -299,7 +299,7 @@ public class FabricAnswers {
 		};
 	}
 
-	static Runnable eventLevelStart(final JSONArray args, final CallbackContext context) throws JSONException {
+	static public Runnable eventLevelStart(final JSONArray args, final CallbackContext context) throws JSONException {
 		final JSONObject obj = args.getJSONObject(0);
 		return new Runnable() {
 			public void run() {
@@ -319,7 +319,7 @@ public class FabricAnswers {
 		};
 	}
 
-	static Runnable eventLevelEnd(final JSONArray args, final CallbackContext context) throws JSONException {
+	static public Runnable eventLevelEnd(final JSONArray args, final CallbackContext context) throws JSONException {
 		final JSONObject obj = args.getJSONObject(0);
 		return new Runnable() {
 			public void run() {
@@ -343,7 +343,7 @@ public class FabricAnswers {
 		};
 	}
 
-	static Runnable eventCustom(final JSONArray args, final CallbackContext context) throws JSONException {
+	static public Runnable eventCustom(final JSONArray args, final CallbackContext context) throws JSONException {
 		final JSONObject obj = args.getJSONObject(0);
 		return new Runnable() {
 			public void run() {

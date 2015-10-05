@@ -1,4 +1,4 @@
-package org.fathens.cordova.plugin;
+package org.fathens.cordova.plugin.fabric;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
