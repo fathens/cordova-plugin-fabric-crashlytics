@@ -14,12 +14,14 @@
 	
 	<platform name="android">
 		<config-file parent="/*" target="res/xml/config.xml">
-			<feature name="CrashlyticsPlugin">
-				<param name="android-package" value="org.fathens.cordova.plugin.fabric.FabricPlugin"/>
+			<feature name="FabricCrashlyticsPlugin">
+				<param name="android-package" value="org.fathens.cordova.plugin.fabric.FabricCrashlytics"/>
+			</feature>
+			<feature name="FabricAnswersPlugin">
+				<param name="android-package" value="org.fathens.cordova.plugin.fabric.FabricAnswers"/>
 			</feature>
 		</config-file>
 		
-		<source-file src="platform/android/src/org/fathens/cordova/plugin/fabric/FabricPlugin.java" target-dir="src/org/fathens/cordova/plugin/fabric"/>
 		<source-file src="platform/android/src/org/fathens/cordova/plugin/fabric/FabricCrashlytics.java" target-dir="src/org/fathens/cordova/plugin/fabric"/>
 		<source-file src="platform/android/src/org/fathens/cordova/plugin/fabric/FabricAnswers.java" target-dir="src/org/fathens/cordova/plugin/fabric"/>
 	</platform>

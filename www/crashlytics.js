@@ -1,31 +1,36 @@
-var exec = require("cordova/exec");
+var cordova = require("cordova/exec");
+
+function exec(name, args) {
+	console.log("Calling FabricCrashlyticsPlugin." + name + ": " + args);
+	cordova(function() {}, function(error) {}, "FabricCrashlyticsPlugin", name, args);
+}
 
 module.exports = {
 		log: function(msg) {
-			exec(function() {}, function(error) {}, "log", [msg]);
+			exec("log", [msg]);
 		},
 		setBool: function(key, value) {
-			exec(function() {}, function(error) {}, "setBool", [key, value]);
+			exec("setBool", [key, value]);
 		},
 		setDouble: function(key, value) {
-			exec(function() {}, function(error) {}, "setDouble", [key, value]);
+			exec("setDouble", [key, value]);
 		},
 		setFloat: function(key, value) {
-			exec(function() {}, function(error) {}, "setFloat", [key, value]);
+			exec("setFloat", [key, value]);
 		},
 		setInt: function(key, value) {
-			exec(function() {}, function(error) {}, "setInt", [key, value]);
+			exec("setInt", [key, value]);
 		},
 		setUserIdentifier: function(identifier) {
-			exec(function() {}, function(error) {}, "setUserIdentifier", [identifier]);
+			exec("setUserIdentifier", [identifier]);
 		},
 		setUserName: function(name) {
-			exec(function() {}, function(error) {}, "setUserName", [name]);
+			exec("setUserName", [name]);
 		},
 		logException: function(message) {
-			exec(function() {}, function(error) {}, "logException", [message]);
+			exec("logException", [message]);
 		},
 		crash: function(message) {
-			exec(function() {}, function(error) {}, "crash", [message]);
+			exec("crash", [message]);
 		}
 }
