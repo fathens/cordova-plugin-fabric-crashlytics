@@ -22,7 +22,7 @@
 			</feature>
 		</config-file>
 		
-		<source-file src="platform/android/src/org/fathens/cordova/plugin/fabric/FabricCrashlytics.java" target-dir="src/org/fathens/cordova/plugin/fabric"/>
-		<source-file src="platform/android/src/org/fathens/cordova/plugin/fabric/FabricAnswers.java" target-dir="src/org/fathens/cordova/plugin/fabric"/>
+		<source-file src="platforms/android/src/main/kotlin/org/fathens/cordova/plugin/fabric/FabricCrashlytics.kt" target-dir="src/org/fathens/cordova/plugin/fabric"/>
+		<source-file src="platforms/android/src/main/kotlin/org/fathens/cordova/plugin/fabric/FabricAnswers.kt" target-dir="src/org/fathens/cordova/plugin/fabric"/>
 	</platform>
 </plugin>
