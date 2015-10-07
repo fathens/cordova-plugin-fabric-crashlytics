@@ -24,8 +24,13 @@ android {
     buildToolsVersion '22.0.1'
     sourceSets {
         main.java {
-            srcDirs += 'src/cordova'
+            srcDirs += '.cordova'
             srcDirs += 'src/main/kotlin'
         }
     }
+}
+
+task prepare(type: Exec) {
+    executable "sh"
+    args '-c', 'git clone -b 4.1.x https://github.com/apache/cordova-android.git tmp && mv tmp/framework/src .cordova && rm -rf tmp'
 }
