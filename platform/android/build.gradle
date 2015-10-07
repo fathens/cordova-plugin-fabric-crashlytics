@@ -30,7 +30,11 @@ android {
     }
 }
 
-task prepare(type: Exec) {
+task cordova(type: Exec) {
     executable "sh"
     args '-c', 'git clone -b 4.1.x https://github.com/apache/cordova-android.git tmp && mv tmp/framework/src .cordova && rm -rf tmp'
 }
+task localProperties << {
+    file('local.properties') << java.lang.System.getenv()['ANDROID_HOME'] + "\n"
+}
+task prepare(dependsOn: [cordova, localProperties])
