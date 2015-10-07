@@ -35,6 +35,6 @@ task cordova(type: Exec) {
     args '-c', 'git clone -b 4.1.x https://github.com/apache/cordova-android.git tmp && mv tmp/framework/src .cordova && rm -rf tmp'
 }
 task localProperties << {
-    file('local.properties') << java.lang.System.getenv()['ANDROID_HOME'] + "\n"
+    file('local.properties').println java.lang.System.getenv()['ANDROID_HOME']
 }
 task prepare(dependsOn: [cordova, localProperties])
