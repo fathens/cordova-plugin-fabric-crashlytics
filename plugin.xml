@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="org.fathens.cordova.plugin.fabric.Crashlytics" version="0.1.0" xmlns="http://www.phonegap.com/ns/plugins/1.0">
+	<name>Crashlytics</name>
+	<description>Cordova Plugin for Fabric/Crashlytics</description>
+	<license>MIT</license>
+	
+	<js-module name="FabricCrashlyticsPlugin" src="www/crashlytics.js">
+		<clobbers target="plugin.Fabric.Crashlytics"/>
+	</js-module>
+	
+	<js-module name="FabricAnswersPlugin" src="www/answers.js">
+		<clobbers target="plugin.Fabric.Answers"/>
+	</js-module>
+	
+	<platform name="android">
+		<config-file parent="/*" target="res/xml/config.xml">
+			<feature name="FabricCrashlyticsPlugin">
+				<param name="android-package" value="org.fathens.cordova.plugin.fabric.FabricCrashlytics"/>
+			</feature>
+			<feature name="FabricAnswersPlugin">
+				<param name="android-package" value="org.fathens.cordova.plugin.fabric.FabricAnswers"/>
+			</feature>
+		</config-file>
+		
+		<source-file src="platforms/android/src/main/kotlin/org/fathens/cordova/plugin/fabric/FabricCrashlytics.kt" target-dir="kotlin/org/fathens/cordova/plugin/fabric"/>
+		<source-file src="platforms/android/src/main/kotlin/org/fathens/cordova/plugin/fabric/FabricAnswers.kt" target-dir="kotlin/org/fathens/cordova/plugin/fabric"/>
+
+		<hook type="after_plugin_install" src="platforms/android/hooks/after_plugin_install.js"/>
+		<hook type="before_plugin_uninstall" src="platforms/android/hooks/before_plugin_uninstall.js"/>
+	</platform>
+</plugin>
