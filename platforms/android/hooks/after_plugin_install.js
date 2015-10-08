@@ -5,29 +5,40 @@ module.exports = function(context) {
 	var fs = context.requireCordovaModule('fs');
 	var path = context.requireCordovaModule('path');
 	var deferral = context.requireCordovaModule('q').defer();
-	var androidPlatformDir = path.join(context.opts.projectRoot, 'platforms', 'android');
-	
-	var shell_command = function() {
-		var cmd = path.join(context.opts.projectRoot, 'plugins', 'org.fathens.cordova.plugin.fabric.Crashlytics', 'platforms', 'android', 'hooks', 'after_plugin_install.sh');
-		var args = [ androidPlatformDir ];
-		var child = child_process.spawn(cmd, args);
+
+	var make_platform_dir = function(base) {
+		return path.join(base, 'platforms', 'android');
 	}
-	
+	var platformDir = make_platform_dir(context.opts.projectRoot)
+	var pluginDir = path.join(context.opts.projectRoot, 'plugins', context.opts.plugin.id);
+
 	var write_properties = function() {
-		var file_path = path.join(androidPlatformDir, 'fabric.properties');
-		var lines = ["apiSecret=" + process.env.FABRIC_BUILD_SECRET,
-		             "apiKey=" + process.env.FABRIC_API_KEY,
-		             "betaDistributionReleaseNotesFilePath=" + process.env.RELEASE_NOTE_PATH,
-		             "betaDistributionGroupAliases=" + process.env.CRASHLYTICS_GROUPS,
-		             ""]
+		var file_path = path.join(platformDir, 'fabric.properties');
+		var lines = [ "apiSecret=" + process.env.FABRIC_BUILD_SECRET, "apiKey=" + process.env.FABRIC_API_KEY,
+				"betaDistributionReleaseNotesFilePath=" + process.env.RELEASE_NOTE_PATH,
+				"betaDistributionGroupAliases=" + process.env.CRASHLYTICS_GROUPS, "" ]
 		fs.writeFileSync(file_path, lines.join("\n"));
 	}
 
 	var main = function() {
-		shell_command();
 		write_properties();
-		
-		deferral.resolve();
+
+		var script = path.join(make_platform_dir(pluginDir), 'hooks', 'after_plugin_install.sh');
+		var child = child_process.execFile(script, [], {
+			cwd : platformDir
+		}, function(error) {
+			if (error) {
+				deferral.reject(error);
+			} else {
+				deferral.resolve();
+			}
+		});
+		child.stdout.on('data', function(data) {
+			process.stdout.write(data);
+		});
+		child.stderr.on('data', function(data) {
+			process.stderr.write(data);
+		});
 	}
 	main();
 	return deferral.promise;
