@@ -5,6 +5,8 @@ echo "################################"
 echo "#### Edit build.gradle"
 
 file=build.gradle
+echo "Edit $(pwd)/$file"
+[ -f "$file" ] || exit 1
 
 cat "$file" | awk '
     /classpath '\''com\.android\.tools\.build:gradle:1\.0\.0\+'\''/ {
@@ -40,4 +42,5 @@ cat "$file" | awk '
         compile=1
     }
 ' > "${file}.tmp"
-mv -vf "${file}.tmp" "$file"
+
+diff "$file" "${file}.tmp" || mv -f "${file}.tmp" "$file"

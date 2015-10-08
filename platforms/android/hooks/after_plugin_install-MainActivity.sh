@@ -6,6 +6,7 @@ echo "#### Fabric initialization"
 
 find src -name 'MainActivity.java' | while read file
 do
+    echo "Edit $(pwd)/$file"
 	cat "$file" | awk '
 		{print $0}
 		/super.onCreate/ {
@@ -13,5 +14,6 @@ do
 			print $0
 		}
 	' > "${file}.tmp"
-	mv -vf "${file}.tmp" "$file"
+	
+	diff "$file" "${file}.tmp" || mv -f "${file}.tmp" "$file"
 done
