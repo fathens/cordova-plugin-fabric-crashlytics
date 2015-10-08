@@ -29,6 +29,10 @@ cat "$file" | awk '
         sub("[^ ].*", "maven { url '\''https://maven.fabric.io/public'\'' }")
         print $0
     }
+    /java\.srcDirs/ {
+        sub("[^ ].*", "kotlin.srcDirs = ['\''kotlin'\'']")
+        print $0
+    }
     /^dependencies / {
         compile=1
     }
