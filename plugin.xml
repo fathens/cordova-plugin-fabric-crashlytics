@@ -26,6 +26,6 @@
 		<source-file src="platforms/android/src/main/kotlin/org/fathens/cordova/plugin/fabric/FabricAnswers.kt" target-dir="src/org/fathens/cordova/plugin/fabric"/>
 
 		<hook type="after_plugin_install" src="platforms/android/hooks/after_plugin_install.js"/>
-		<hook type="before_plugin_uninstall" src="platforms/android/hooks/before_plugin_uninstall.js/>
+		<hook type="before_plugin_uninstall" src="platforms/android/hooks/before_plugin_uninstall.js"/>
 	</platform>
 </plugin>
