@@ -14,7 +14,6 @@ module.exports = function(context) {
 	}
 	
 	var write_properties = function() {
-		process.stdout.write(JSON.stringify(process.env, null, '\t'));
 		var file_path = path.join(androidPlatformDir, 'fabric.properties');
 		var lines = ["apiSecret=" + process.env.FABRIC_BUILD_SECRET,
 		             "apiKey=" + process.env.FABRIC_API_KEY,
