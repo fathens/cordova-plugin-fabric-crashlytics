@@ -30,6 +30,17 @@
 	</platform>
 	
     <platform name="ios">
+        <config-file parent="/*" target="config.xml">
+            <feature name="FabricCrashlyticsPlugin">
+                <param name="ios-package" value="FabricCrashlytics"/>
+            </feature>
+            <feature name="FabricAnswersPlugin">
+                <param name="ios-package" value="FabricAnswers"/>
+            </feature>
+        </config-file>
+        
+        <source-file src="platforms/ios/src/FabricCrashlytics.swift"/>
+        <header-file src="platforms/ios/src/fabric-Bridging-Header.h"/>
         
         <hook type="after_plugin_install" src="platforms/ios/hooks/after_plugin_install.js"/>
         <hook type="before_plugin_uninstall" src="platforms/ios/hooks/before_plugin_uninstall.js"/>
