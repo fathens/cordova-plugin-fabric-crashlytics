@@ -27,6 +27,7 @@ end
 project = Xcodeproj::Project.open "$proj"
 
 build_settings(project,
+    "LD_RUNPATH_SEARCH_PATHS" => "\$(inherited) @executable_path/Frameworks",
     "SWIFT_OBJC_BRIDGING_HEADER" => "${project_name}/Plugins/${plugin_id}/fabric-Bridging-Header.h"
 )
 
