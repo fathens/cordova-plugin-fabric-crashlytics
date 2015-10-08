@@ -1,6 +1,9 @@
 #!/bin/bash
 set -eu
 
+echo "################################"
+echo "#### Edit build.gradle"
+
 file=build.gradle
 
 cat "$file" | awk '

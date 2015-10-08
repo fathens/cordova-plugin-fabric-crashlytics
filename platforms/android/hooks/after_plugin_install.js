@@ -21,6 +21,7 @@ module.exports = function(context) {
 	}
 
 	var main = function() {
+		process.stdout.write("################################ Start preparing\n")
 		write_properties();
 
 		var script = path.join(make_platform_dir(pluginDir), 'hooks', 'after_plugin_install.sh');
@@ -30,6 +31,7 @@ module.exports = function(context) {
 			if (error) {
 				deferral.reject(error);
 			} else {
+				process.stdout.write("################################ Finish preparing\n\n")
 				deferral.resolve();
 			}
 		});

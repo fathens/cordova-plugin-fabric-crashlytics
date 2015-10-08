@@ -1,6 +1,9 @@
 #!/bin/bash
 set -eu
 
+echo "################################"
+echo "#### Fabric initialization"
+
 find src -name 'MainActivity.java' | while read file
 do
 	cat "$file" | awk '
