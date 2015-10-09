@@ -43,4 +43,5 @@ tmp="$(fix_newlines "$file")"
 result="$(insert "$tmp")"
 rm -f "$tmp"
 
-diff "$file" "$result" | sed 's/\(^>     <string>\).*\(<\/string>\)/\1...\2/' || mv -f "$result" "$file"
+diff "$file" "$result" | sed 's/\(^>     <string>\).*\(<\/string>\)/\1...\2/'
+mv -f "$result" "$file"
