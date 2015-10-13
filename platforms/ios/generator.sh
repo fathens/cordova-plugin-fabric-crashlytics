@@ -2,6 +2,9 @@
 
 cd "$(dirname $0)"
 
+echo "################################"
+echo "#### Generate Xcodeproject"
+
 cat <<EOF | ruby
 require 'xcodeproj'
 
@@ -35,6 +38,9 @@ build_settings(project,
 
 project.save
 EOF
+
+echo "################################"
+echo "#### pod install"
 
 cat <<EOF > Podfile
 platform :ios, "8.0"
