@@ -17,7 +17,6 @@ end
 
 project_name = "Cordova-Plugin-Crashlytics"
 project = Xcodeproj::Project.new "#{project_name}.xcodeproj"
-project.initialize_from_scratch
 
 target = project.new_target(:framework, 'GeneratedProduct', :ios)
 project.recreate_user_schemes
