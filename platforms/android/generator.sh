@@ -1,3 +1,6 @@
+#!/bin/bash
+
+cat <<EOF > build.gradle
 buildscript {
     repositories {
         mavenCentral()
@@ -38,3 +41,10 @@ task localProperties << {
     file('local.properties').println java.lang.System.getenv()['ANDROID_HOME']
 }
 task prepare(dependsOn: [cordova, localProperties])
+EOF
+
+gradle wrapper --gradle-version 2.7
+./gradlew prepare
+
+echo "Generating project done"
+echo "Open by AndroidStudio. Thank you."
