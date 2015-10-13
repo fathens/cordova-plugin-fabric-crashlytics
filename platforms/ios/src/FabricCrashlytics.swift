@@ -28,4 +28,18 @@ class FabricCrashlytics: CDVPlugin {
         
         commandDelegate!.sendPluginResult(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
     }
+    
+    func crash(command: CDVInvokedUrlCommand) {
+        func msg() -> String {
+            if let v = command.arguments.first {
+                return String(v)
+            } else {
+                return ""
+            }
+        }
+        CLSLogv("%@", getVaList([msg()]));
+        Crashlytics.sharedInstance().crash()
+        
+        commandDelegate!.sendPluginResult(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
+    }
 }
