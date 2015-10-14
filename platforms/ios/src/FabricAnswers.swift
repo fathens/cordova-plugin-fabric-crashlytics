@@ -12,7 +12,7 @@ class FabricAnswers: CDVPlugin {
     
     func eventPurchase(command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
-            let price = dict?["itemPrice"] as? NSDecimalNumber
+            let price = (dict?["itemPrice"] as? NSNumber).map { NSDecimalNumber(decimal: $0.decimalValue) }
             let currency = dict?["currency"] as? String
             let success = (dict?["success"] as? Bool).map { $0 ? 1 : 0 }
             let name = dict?["itemName"] as? String
@@ -24,7 +24,7 @@ class FabricAnswers: CDVPlugin {
     
     func eventAddToCart(command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
-            let price = dict?["itemPrice"] as? NSDecimalNumber
+            let price = (dict?["itemPrice"] as? NSNumber).map { NSDecimalNumber(decimal: $0.decimalValue) }
             let currency = dict?["currency"] as? String
             let name = dict?["itemName"] as? String
             let type = dict?["itemType"] as? String
@@ -35,7 +35,7 @@ class FabricAnswers: CDVPlugin {
     
     func eventStartCheckout(command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
-            let price = dict?["totalPrice"] as? NSDecimalNumber
+            let price = (dict?["totalPrice"] as? NSNumber).map { NSDecimalNumber(decimal: $0.decimalValue) }
             let currency = dict?["currency"] as? String
             let count = dict?["itemCount"] as? NSNumber
             Answers.logStartCheckoutWithPrice(price, currency: currency, itemCount: count, customAttributes: custom)

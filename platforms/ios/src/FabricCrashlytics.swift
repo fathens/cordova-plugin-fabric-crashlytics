@@ -45,7 +45,7 @@ class FabricCrashlytics: CDVPlugin {
     
     func setDouble(command: CDVInvokedUrlCommand) {
         let key = command.arguments[0] as! String
-        let value = command.arguments[1] as! Float64
+        let value = (command.arguments[1] as! NSNumber).doubleValue
         frame(command) {
             Crashlytics.sharedInstance().setObjectValue(value, forKey: key)
         }
@@ -53,7 +53,7 @@ class FabricCrashlytics: CDVPlugin {
     
     func setFloat(command: CDVInvokedUrlCommand) {
         let key = command.arguments[0] as! String
-        let value = command.arguments[1] as! Float32
+        let value = (command.arguments[1] as! NSNumber).floatValue
         frame(command) {
             Crashlytics.sharedInstance().setFloatValue(value, forKey: key)
         }
@@ -61,7 +61,7 @@ class FabricCrashlytics: CDVPlugin {
     
     func setInt(command: CDVInvokedUrlCommand) {
         let key = command.arguments[0] as! String
-        let value = command.arguments[1] as! Int32
+        let value = (command.arguments[1] as! NSNumber).intValue
         frame(command) {
             Crashlytics.sharedInstance().setIntValue(value, forKey: key)
         }
