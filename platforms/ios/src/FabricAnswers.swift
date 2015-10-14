@@ -18,7 +18,8 @@ class FabricAnswers: CDVPlugin {
             let name = dict?["itemName"] as? String
             let type = dict?["itemType"] as? String
             let id = dict?["itemId"] as? String
-            Answers.logPurchaseWithPrice(price, currency: currency, success: success, itemName: name, itemType: type, itemId: id, customAttributes: custom)
+            let numType = dict?["itemPrice"].map { $0.dynamicType }
+            Answers.logPurchaseWithPrice(price, currency: currency, success: success, itemName: name, itemType: "\(numType)", itemId: id, customAttributes: custom)
         }
     }
     
