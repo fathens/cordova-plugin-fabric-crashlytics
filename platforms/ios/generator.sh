@@ -2,8 +2,12 @@
 
 cd "$(dirname $0)"
 
+title="Cordova-Plugin-$(basename "$(cd ../../; pwd)")"
+
 echo "################################"
 echo "#### Generate Xcodeproject"
+
+echo "Project Name: $title"
 
 cat <<EOF | ruby
 require 'xcodeproj'
@@ -18,7 +22,7 @@ def build_settings(project, params)
     end
 end
 
-project_name = "Cordova-Plugin-Crashlytics"
+project_name = "$title"
 project = Xcodeproj::Project.new "#{project_name}.xcodeproj"
 
 target = project.new_target(:framework, 'GeneratedProduct', :ios)
