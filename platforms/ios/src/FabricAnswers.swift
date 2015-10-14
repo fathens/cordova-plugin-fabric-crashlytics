@@ -12,7 +12,7 @@ class FabricAnswers: CDVPlugin {
     
     func eventPurchase(command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
-            let price = dict?["itemPrice"].map { NSDecimalNumber(string: $0.string) }
+            let price = (dict?["itemPrice"]?.doubleValue).map { NSDecimalNumber(double: $0) }
             let currency = dict?["currency"] as? String
             let success = (dict?["success"] as? Bool).map { $0 ? 1 : 0 }
             let name = dict?["itemName"] as? String
