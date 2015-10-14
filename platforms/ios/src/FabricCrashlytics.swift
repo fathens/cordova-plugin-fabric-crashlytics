@@ -5,11 +5,6 @@ class FabricCrashlytics: CDVPlugin {
     private func logmsg(command: CDVInvokedUrlCommand) -> String? {
         return command.arguments.first.map {
             let msg = String($0)
-            
-            let alert = UIAlertController(title: "Pop by Swift", message: msg, preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-            viewController!.presentViewController(alert, animated: true, completion: nil)
-            
             CLSLogv("%@", getVaList([msg]))
             return msg
         }
