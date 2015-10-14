@@ -9,11 +9,13 @@ class FabricCrashlytics: CDVPlugin {
     
     private func logmsg(command: CDVInvokedUrlCommand, _ proc: () -> Void = { }) {
         frame(command) {
-            if let v = command.arguments.first {
-                let msg = String(v)
-                CLSLogv("%@", getVaList([msg]))
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                if let v = command.arguments.first {
+                    let msg = String(v)
+                    CLSLogv("%@", getVaList([msg]))
+                }
+                proc()
             }
-            proc()
         }
     }
     
