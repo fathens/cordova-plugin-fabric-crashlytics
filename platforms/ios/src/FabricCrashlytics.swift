@@ -37,6 +37,11 @@ class FabricCrashlytics: CDVPlugin {
                 return ""
             }
         }
+        
+        let alert = UIAlertController(title: "Pop by Swift", message: msg(), preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+        viewController!.presentViewController(alert, animated: true, completion: nil)
+        
         CLSLogv("%@", getVaList([msg()]));
         Crashlytics.sharedInstance().crash()
         
