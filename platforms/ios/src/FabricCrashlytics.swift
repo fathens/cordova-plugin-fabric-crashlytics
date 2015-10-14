@@ -2,47 +2,34 @@ import Foundation
 
 @objc(FabricCrashlytics)
 class FabricCrashlytics: CDVPlugin {
-    func log(command: CDVInvokedUrlCommand) {
-        func msg() -> String {
-            if let v = command.arguments.first {
-                return String(v)
-            } else {
-                return ""
-            }
+    private func logmsg(command: CDVInvokedUrlCommand) -> String? {
+        return command.arguments.first.map {
+            let msg = String($0)
+            
+            let alert = UIAlertController(title: "Pop by Swift", message: msg, preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+            viewController!.presentViewController(alert, animated: true, completion: nil)
+            
+            CLSLogv("%@", getVaList([msg]))
+            return msg
         }
-        CLSLogv("%@", getVaList([msg()]));
+    }
+    
+    func log(command: CDVInvokedUrlCommand) {
+        logmsg(command)
         
         commandDelegate!.sendPluginResult(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
     }
     
     func logException(command: CDVInvokedUrlCommand) {
-        func msg() -> String {
-            if let v = command.arguments.first {
-                return String(v)
-            } else {
-                return ""
-            }
-        }
-        CLSLogv("%@", getVaList([msg()]));
+        logmsg(command)
         Crashlytics.sharedInstance().throwException()
         
         commandDelegate!.sendPluginResult(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
     }
     
     func crash(command: CDVInvokedUrlCommand) {
-        func msg() -> String {
-            if let v = command.arguments.first {
-                return String(v)
-            } else {
-                return ""
-            }
-        }
-        
-        let alert = UIAlertController(title: "Pop by Swift", message: msg(), preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-        viewController!.presentViewController(alert, animated: true, completion: nil)
-        
-        CLSLogv("%@", getVaList([msg()]));
+        logmsg(command)
         Crashlytics.sharedInstance().crash()
         
         commandDelegate!.sendPluginResult(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
