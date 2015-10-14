@@ -14,7 +14,7 @@ class FabricAnswers: CDVPlugin {
         frame(command) { dict, custom in
             let priceRaw = dict?["itemPrice"]
             let priceType = priceRaw.map { NSStringFromClass($0.dynamicType) }
-            let price = (priceRaw as? NSNumber).map { NSDecimalNumber(decimal: $0.decimalValue) }
+            let price = (priceRaw as? NSNumber).map { NSDecimalNumber(double: $0.doubleValue) }
             let currency = dict?["currency"] as? String
             let success = (dict?["success"] as? Bool).map { $0 ? 1 : 0 }
             let name = dict?["itemName"] as? String
