@@ -3,7 +3,7 @@ import Foundation
 @objc(FabricAnswers)
 class FabricAnswers: CDVPlugin {
     private func frame(command: CDVInvokedUrlCommand, _ proc: (Dictionary<String, AnyObject>?, Dictionary<String, AnyObject>?) -> Void) {
-        let dict = command.arguments.first.map {            ($0 is NSDictionary)  ? $0 as! Dictionary<String, AnyObject> :  [:]        }
+        let dict = command.arguments.first.flatMap { $0 as? Dictionary<String, AnyObject> }
         let custom = dict?["custom"] as? Dictionary<String, AnyObject>
         
         proc(dict, custom)
