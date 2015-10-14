@@ -24,16 +24,14 @@ project = Xcodeproj::Project.new "#{project_name}.xcodeproj"
 target = project.new_target(:framework, 'GeneratedProduct', :ios)
 project.recreate_user_schemes
 
-sources = []
-sources << project.main_group.new_reference("src/FabricAnswers.swift")
-sources << project.main_group.new_reference("src/FabricCrashlytics.swift")
-project.main_group.new_reference("src/fabric-Bridging-Header.h")
+sources = Dir.glob("src/*.swift").map { |path| project.new_file(path) }
+header = Dir.glob("src/*.h").map { |path| project.new_file(path) }.first
 
 target.add_file_references(sources)
 
 build_settings(project,
   "ENABLE_BITCODE" => "NO",
-  "SWIFT_OBJC_BRIDGING_HEADER" => "src/fabric-Bridging-Header.h"
+  "SWIFT_OBJC_BRIDGING_HEADER" => header.path
 )
 
 project.save
