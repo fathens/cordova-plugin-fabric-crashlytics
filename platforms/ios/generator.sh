@@ -28,8 +28,10 @@ project = Xcodeproj::Project.new "#{project_name}.xcodeproj"
 target = project.new_target(:framework, 'GeneratedProduct', :ios)
 project.recreate_user_schemes
 
-sources = Dir.glob("src/*.swift").map { |path| project.new_file(path) }
-header = Dir.glob("src/*.h").map { |path| project.new_file(path) }.first
+group = project.new_group "Sources"
+
+sources = Dir.glob("src/*.swift").map { |path| group.new_file(path) }
+header = Dir.glob("src/*.h").map { |path| group.new_file(path) }.first
 
 target.add_file_references(sources)
 
