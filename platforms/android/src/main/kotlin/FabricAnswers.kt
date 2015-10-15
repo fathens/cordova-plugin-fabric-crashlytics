@@ -38,7 +38,7 @@ public class FabricAnswers : CordovaPlugin() {
             val event = PurchaseEvent()
             if (obj != null) {
                 if (obj.has("itemPrice"))
-                    event.putItemPrice(BigDecimal(obj.getInt("itemPrice")))
+                    event.putItemPrice(BigDecimal(obj.getDouble("itemPrice")))
                 if (obj.has("currency"))
                     event.putCurrency(Currency.getInstance(obj.getString("currency")))
                 if (obj.has("itemName"))
@@ -63,7 +63,7 @@ public class FabricAnswers : CordovaPlugin() {
             val event = AddToCartEvent()
             if (obj != null) {
                 if (obj.has("itemPrice"))
-                    event.putItemPrice(BigDecimal(obj.getInt("itemPrice")))
+                    event.putItemPrice(BigDecimal(obj.getDouble("itemPrice")))
                 if (obj.has("currency"))
                     event.putCurrency(Currency.getInstance(obj.getString("currency")))
                 if (obj.has("itemName"))
@@ -86,7 +86,7 @@ public class FabricAnswers : CordovaPlugin() {
             val event = StartCheckoutEvent()
             if (obj != null) {
                 if (obj.has("totalPrice"))
-                    event.putTotalPrice(BigDecimal(obj.getInt("totalPrice")))
+                    event.putTotalPrice(BigDecimal(obj.getDouble("totalPrice")))
                 if (obj.has("currency"))
                     event.putCurrency(Currency.getInstance(obj.getString("currency")))
                 if (obj.has("itemCount"))
