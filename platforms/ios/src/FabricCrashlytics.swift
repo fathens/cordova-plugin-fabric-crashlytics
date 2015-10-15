@@ -29,13 +29,15 @@ class FabricCrashlytics: CDVPlugin {
         commandDelegate!.sendPluginResult(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
     }
     
-    private func logmsg(command: CDVInvokedUrlCommand, _ proc: () -> Void = { }) {
+    private func logmsg(command: CDVInvokedUrlCommand, _ proc: () -> Void = {}) {
         frame(command) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
                 if let v = command.arguments.first {
                     if (!(v is NSNull)) {
-                        let msg = String(v)
-                        CLSLogv("%@", getVaList([msg]))
+                        let msg = String(v).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                        if (!msg.isEmpty) {
+                            CLSLogv("%@", getVaList([msg]))
+                        }
                     }
                 }
                 proc()
