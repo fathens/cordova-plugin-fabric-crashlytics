@@ -36,7 +36,7 @@ class FabricCrashlytics: CDVPlugin {
                     if (!(v is NSNull)) {
                         let msg = String(v).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
                         if (!msg.isEmpty) {
-                            CLSLogv("%@", getVaList([msg]))
+                            //CLSLogv("%@", getVaList([msg]))
                         }
                     }
                 }
