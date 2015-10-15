@@ -33,8 +33,10 @@ class FabricCrashlytics: CDVPlugin {
         frame(command) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
                 if let v = command.arguments.first {
-                    let msg = String(v)
-                    CLSLogv("%@", getVaList([msg]))
+                    if (!(v is NSNull)) {
+                        let msg = String(v)
+                        CLSLogv("%@", getVaList([msg]))
+                    }
                 }
                 proc()
             }
