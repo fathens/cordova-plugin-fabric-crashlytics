@@ -26,9 +26,9 @@ public class FabricAnswers : CordovaPlugin() {
             val key = iterator.next()
             val value = custom.get(key)
             if (value is String)
-                event.putCustomAttribute(key, value as String?)
+                event.putCustomAttribute(key, value)
             if (value is Number)
-                event.putCustomAttribute(key, value as Number?)
+                event.putCustomAttribute(key, value)
         }
     }
 
