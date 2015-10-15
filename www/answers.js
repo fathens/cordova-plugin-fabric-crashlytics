@@ -2,7 +2,9 @@ var cordova = require("cordova/exec");
 
 function exec(name, map) {
 	console.log("Calling FabricAnswersPlugin." + name + ": " + map);
-	cordova(function() {}, function(error) {}, "FabricAnswersPlugin", name, [map]);
+	cordova(function() {}, function(error) {
+		alert("Error on " + name + "\n" + error);
+	}, "FabricAnswersPlugin", name, [map]);
 }
 
 var names = [
