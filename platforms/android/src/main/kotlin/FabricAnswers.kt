@@ -11,9 +11,12 @@ import com.crashlytics.android.answers.*
 public class FabricAnswers : CordovaPlugin() {
     override fun execute(action: String, data: JSONArray, callbackContext: CallbackContext): Boolean {
         try {
-            val method = javaClass.getMethod(action, JSONArray::class.java, CallbackContext::class.java)
-            val runner = method.invoke(this, data, callbackContext) as (() -> Unit)
-            cordova.getThreadPool().execute(runner)
+            val method = javaClass.getMethod(action, data.javaClass)
+            val runner = method.invoke(this, data) as (() -> Unit)
+            cordova.getThreadPool().execute {
+                runner()
+                callbackContext.success()
+            }
             return true
         } catch (e: NoSuchMethodException) {
             return false
@@ -26,19 +29,19 @@ public class FabricAnswers : CordovaPlugin() {
             val key = iterator.next()
             val value = custom.get(key)
             if (value is String)
-                event.putCustomAttribute(key, value as String?)
+                event.putCustomAttribute(key, value)
             if (value is Number)
-                event.putCustomAttribute(key, value as Number?)
+                event.putCustomAttribute(key, value)
         }
     }
 
-    public fun eventPurchase(args: JSONArray, context: CallbackContext): (() -> Unit) {
+    public fun eventPurchase(args: JSONArray): (() -> Unit) {
         val obj = if (args.length() > 0) args.getJSONObject(0) else null
         return {
             val event = PurchaseEvent()
             if (obj != null) {
                 if (obj.has("itemPrice"))
-                    event.putItemPrice(BigDecimal(obj.getInt("itemPrice")))
+                    event.putItemPrice(BigDecimal(obj.getDouble("itemPrice")))
                 if (obj.has("currency"))
                     event.putCurrency(Currency.getInstance(obj.getString("currency")))
                 if (obj.has("itemName"))
@@ -53,17 +56,16 @@ public class FabricAnswers : CordovaPlugin() {
                     putCustom(event, obj.getJSONObject("custom"))
             }
             Answers.getInstance().logPurchase(event)
-            context.success()
         }
     }
 
-    public fun eventAddToCart(args: JSONArray, context: CallbackContext): (() -> Unit) {
+    public fun eventAddToCart(args: JSONArray): (() -> Unit) {
         val obj = if (args.length() > 0) args.getJSONObject(0) else null
         return {
             val event = AddToCartEvent()
             if (obj != null) {
                 if (obj.has("itemPrice"))
-                    event.putItemPrice(BigDecimal(obj.getInt("itemPrice")))
+                    event.putItemPrice(BigDecimal(obj.getDouble("itemPrice")))
                 if (obj.has("currency"))
                     event.putCurrency(Currency.getInstance(obj.getString("currency")))
                 if (obj.has("itemName"))
@@ -76,17 +78,16 @@ public class FabricAnswers : CordovaPlugin() {
                     putCustom(event, obj.getJSONObject("custom"))
             }
             Answers.getInstance().logAddToCart(event)
-            context.success()
         }
     }
 
-    public fun eventStartCheckout(args: JSONArray, context: CallbackContext): (() -> Unit) {
+    public fun eventStartCheckout(args: JSONArray): (() -> Unit) {
         val obj = if (args.length() > 0) args.getJSONObject(0) else null
         return {
             val event = StartCheckoutEvent()
             if (obj != null) {
                 if (obj.has("totalPrice"))
-                    event.putTotalPrice(BigDecimal(obj.getInt("totalPrice")))
+                    event.putTotalPrice(BigDecimal(obj.getDouble("totalPrice")))
                 if (obj.has("currency"))
                     event.putCurrency(Currency.getInstance(obj.getString("currency")))
                 if (obj.has("itemCount"))
@@ -95,11 +96,10 @@ public class FabricAnswers : CordovaPlugin() {
                     putCustom(event, obj.getJSONObject("custom"))
             }
             Answers.getInstance().logStartCheckout(event)
-            context.success()
         }
     }
 
-    public fun eventContentView(args: JSONArray, context: CallbackContext): (() -> Unit) {
+    public fun eventContentView(args: JSONArray): (() -> Unit) {
         val obj = if (args.length() > 0) args.getJSONObject(0) else null
         return {
             val event = ContentViewEvent()
@@ -114,11 +114,10 @@ public class FabricAnswers : CordovaPlugin() {
                     putCustom(event, obj.getJSONObject("custom"))
             }
             Answers.getInstance().logContentView(event)
-            context.success()
         }
     }
 
-    public fun eventSearch(args: JSONArray, context: CallbackContext): (() -> Unit) {
+    public fun eventSearch(args: JSONArray): (() -> Unit) {
         val obj = if (args.length() > 0) args.getJSONObject(0) else null
         return {
             val event = SearchEvent()
@@ -129,11 +128,10 @@ public class FabricAnswers : CordovaPlugin() {
                     putCustom(event, obj.getJSONObject("custom"))
             }
             Answers.getInstance().logSearch(event)
-            context.success()
         }
     }
 
-    public fun eventShare(args: JSONArray, context: CallbackContext): (() -> Unit) {
+    public fun eventShare(args: JSONArray): (() -> Unit) {
         val obj = if (args.length() > 0) args.getJSONObject(0) else null
         return {
             val event = ShareEvent()
@@ -150,11 +148,10 @@ public class FabricAnswers : CordovaPlugin() {
                     putCustom(event, obj.getJSONObject("custom"))
             }
             Answers.getInstance().logShare(event)
-            context.success()
         }
     }
 
-    public fun eventRating(args: JSONArray, context: CallbackContext): (() -> Unit) {
+    public fun eventRating(args: JSONArray): (() -> Unit) {
         val obj = if (args.length() > 0) args.getJSONObject(0) else null
         return {
             val event = RatingEvent()
@@ -171,11 +168,10 @@ public class FabricAnswers : CordovaPlugin() {
                     putCustom(event, obj.getJSONObject("custom"))
             }
             Answers.getInstance().logRating(event)
-            context.success()
         }
     }
 
-    public fun eventSignUp(args: JSONArray, context: CallbackContext): (() -> Unit) {
+    public fun eventSignUp(args: JSONArray): (() -> Unit) {
         val obj = if (args.length() > 0) args.getJSONObject(0) else null
         return {
             val event = SignUpEvent()
@@ -188,11 +184,10 @@ public class FabricAnswers : CordovaPlugin() {
                     putCustom(event, obj.getJSONObject("custom"))
             }
             Answers.getInstance().logSignUp(event)
-            context.success()
         }
     }
 
-    public fun eventLogin(args: JSONArray, context: CallbackContext): (() -> Unit) {
+    public fun eventLogin(args: JSONArray): (() -> Unit) {
         val obj = if (args.length() > 0) args.getJSONObject(0) else null
         return {
             val event = LoginEvent()
@@ -205,11 +200,10 @@ public class FabricAnswers : CordovaPlugin() {
                     putCustom(event, obj.getJSONObject("custom"))
             }
             Answers.getInstance().logLogin(event)
-            context.success()
         }
     }
 
-    public fun eventInvite(args: JSONArray, context: CallbackContext): (() -> Unit) {
+    public fun eventInvite(args: JSONArray): (() -> Unit) {
         val obj = if (args.length() > 0) args.getJSONObject(0) else null
         return {
             val event = InviteEvent()
@@ -220,11 +214,10 @@ public class FabricAnswers : CordovaPlugin() {
                     putCustom(event, obj.getJSONObject("custom"))
             }
             Answers.getInstance().logInvite(event)
-            context.success()
         }
     }
 
-    public fun eventLevelStart(args: JSONArray, context: CallbackContext): (() -> Unit) {
+    public fun eventLevelStart(args: JSONArray): (() -> Unit) {
         val obj = if (args.length() > 0) args.getJSONObject(0) else null
         return {
             val event = LevelStartEvent()
@@ -235,11 +228,10 @@ public class FabricAnswers : CordovaPlugin() {
                     putCustom(event, obj.getJSONObject("custom"))
             }
             Answers.getInstance().logLevelStart(event)
-            context.success()
         }
     }
 
-    public fun eventLevelEnd(args: JSONArray, context: CallbackContext): (() -> Unit) {
+    public fun eventLevelEnd(args: JSONArray): (() -> Unit) {
         val obj = if (args.length() > 0) args.getJSONObject(0) else null
         return {
             val event = LevelEndEvent()
@@ -254,11 +246,10 @@ public class FabricAnswers : CordovaPlugin() {
                     putCustom(event, obj.getJSONObject("custom"))
             }
             Answers.getInstance().logLevelEnd(event)
-            context.success()
         }
     }
 
-    public fun eventCustom(args: JSONArray, context: CallbackContext): (() -> Unit) {
+    public fun eventCustom(args: JSONArray): (() -> Unit) {
         val obj = if (args.length() > 0) args.getJSONObject(0) else null
         return {
             val event = CustomEvent(obj?.getString("name") ?: "NoName")
@@ -267,7 +258,6 @@ public class FabricAnswers : CordovaPlugin() {
                     putCustom(event, obj.getJSONObject("attributes"))
             }
             Answers.getInstance().logCustom(event)
-            context.success()
         }
     }
 }
