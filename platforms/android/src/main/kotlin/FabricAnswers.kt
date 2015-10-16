@@ -8,6 +8,17 @@ import org.json.JSONArray
 import org.json.JSONObject
 import com.crashlytics.android.answers.*
 
+class ParamDict(val obj: JSONObject) {
+    fun opt(name: String): Any? = obj.opt(name)
+
+    fun getJSONObject(name: String): JSONObject? = opt(name) as? JSONObject
+    fun getString(name: String): String? = opt(name) as? String
+    fun getBoolean(name: String): Boolean? = opt(name) as? Boolean
+    fun getNumber(name: String): Number? = opt(name) as? Number
+    fun getDecimal(name: String): BigDecimal? = getNumber(name)?.let { BigDecimal(it.toDouble()) }
+    fun getCurrency(name: String): Currency? = getString(name)?.let { Currency.getInstance(it)}
+}
+
 public class FabricAnswers : CordovaPlugin() {
     override fun execute(action: String, data: JSONArray, callbackContext: CallbackContext): Boolean {
         try {
@@ -28,10 +39,11 @@ public class FabricAnswers : CordovaPlugin() {
         while (iterator.hasNext()) {
             val key = iterator.next()
             val value = custom.get(key)
-            if (value is String)
-                event.putCustomAttribute(key, value)
-            if (value is Number)
-                event.putCustomAttribute(key, value)
+            when (value) {
+                is String -> event.putCustomAttribute(key, value)
+                is Number -> event.putCustomAttribute(key, value)
+                else -> event.putCustomAttribute(key, "$value")
+            }
         }
     }
 
@@ -40,20 +52,14 @@ public class FabricAnswers : CordovaPlugin() {
         return {
             val event = PurchaseEvent()
             if (obj != null) {
-                if (obj.has("itemPrice"))
-                    event.putItemPrice(BigDecimal(obj.getDouble("itemPrice")))
-                if (obj.has("currency"))
-                    event.putCurrency(Currency.getInstance(obj.getString("currency")))
-                if (obj.has("itemName"))
-                    event.putItemName(obj.getString("itemName"))
-                if (obj.has("itemType"))
-                    event.putItemType(obj.getString("itemType"))
-                if (obj.has("itemId"))
-                    event.putItemId(obj.getString("itemId"))
-                if (obj.has("success"))
-                    event.putSuccess(obj.getBoolean("success"))
-                if (obj.has("custom"))
-                    putCustom(event, obj.getJSONObject("custom"))
+                val dict = ParamDict(obj)
+                dict.getDecimal("itemPrice")?.let { event.putItemPrice(it) }
+                dict.getCurrency("currency")?.let { event.putCurrency(it) }
+                dict.getString("itemName")?.let { event.putItemName(it) }
+                dict.getString("itemType")?.let { event.putItemType(it) }
+                dict.getString("itemId")?.let { event.putItemId(it) }
+                dict.getBoolean("success")?.let { event.putSuccess(it) }
+                dict.getJSONObject("custom")?.let { putCustom(event, it) }
             }
             Answers.getInstance().logPurchase(event)
         }
@@ -64,18 +70,13 @@ public class FabricAnswers : CordovaPlugin() {
         return {
             val event = AddToCartEvent()
             if (obj != null) {
-                if (obj.has("itemPrice"))
-                    event.putItemPrice(BigDecimal(obj.getDouble("itemPrice")))
-                if (obj.has("currency"))
-                    event.putCurrency(Currency.getInstance(obj.getString("currency")))
-                if (obj.has("itemName"))
-                    event.putItemName(obj.getString("itemName"))
-                if (obj.has("itemType"))
-                    event.putItemType(obj.getString("itemType"))
-                if (obj.has("itemId"))
-                    event.putItemId(obj.getString("itemId"))
-                if (obj.has("custom"))
-                    putCustom(event, obj.getJSONObject("custom"))
+                val dict = ParamDict(obj)
+                dict.getDecimal("itemPrice")?.let { event.putItemPrice(it) }
+                dict.getCurrency("currency")?.let { event.putCurrency(it) }
+                dict.getString("itemName")?.let { event.putItemName(it) }
+                dict.getString("itemType")?.let { event.putItemType(it) }
+                dict.getString("itemId")?.let { event.putItemId(it) }
+                dict.getJSONObject("custom")?.let { putCustom(event, it) }
             }
             Answers.getInstance().logAddToCart(event)
         }
@@ -86,14 +87,11 @@ public class FabricAnswers : CordovaPlugin() {
         return {
             val event = StartCheckoutEvent()
             if (obj != null) {
-                if (obj.has("totalPrice"))
-                    event.putTotalPrice(BigDecimal(obj.getDouble("totalPrice")))
-                if (obj.has("currency"))
-                    event.putCurrency(Currency.getInstance(obj.getString("currency")))
-                if (obj.has("itemCount"))
-                    event.putItemCount(obj.getInt("itemCount"))
-                if (obj.has("custom"))
-                    putCustom(event, obj.getJSONObject("custom"))
+                val dict = ParamDict(obj)
+                dict.getDecimal("totalPrice")?.let { event.putTotalPrice(it) }
+                dict.getCurrency("currency")?.let { event.putCurrency(it) }
+                dict.getNumber("itemCount")?.let { event.putItemCount(it.toInt()) }
+                dict.getJSONObject("custom")?.let { putCustom(event, it) }
             }
             Answers.getInstance().logStartCheckout(event)
         }
@@ -104,14 +102,11 @@ public class FabricAnswers : CordovaPlugin() {
         return {
             val event = ContentViewEvent()
             if (obj != null) {
-                if (obj.has("contentName"))
-                    event.putContentName(obj.getString("contentName"))
-                if (obj.has("contentType"))
-                    event.putContentType(obj.getString("contentType"))
-                if (obj.has("contentId"))
-                    event.putContentId(obj.getString("contentId"))
-                if (obj.has("custom"))
-                    putCustom(event, obj.getJSONObject("custom"))
+                val dict = ParamDict(obj)
+                dict.getString("contentName")?.let { event.putContentName(it) }
+                dict.getString("contentType")?.let { event.putContentType(it) }
+                dict.getString("contentId")?.let { event.putContentId(it) }
+                dict.getJSONObject("custom")?.let { putCustom(event, it) }
             }
             Answers.getInstance().logContentView(event)
         }
@@ -122,10 +117,9 @@ public class FabricAnswers : CordovaPlugin() {
         return {
             val event = SearchEvent()
             if (obj != null) {
-                if (obj.has("query"))
-                    event.putQuery(obj.getString("query"))
-                if (obj.has("custom"))
-                    putCustom(event, obj.getJSONObject("custom"))
+                val dict = ParamDict(obj)
+                dict.getString("query")?.let { event.putQuery(it) }
+                dict.getJSONObject("custom")?.let { putCustom(event, it) }
             }
             Answers.getInstance().logSearch(event)
         }
@@ -136,16 +130,12 @@ public class FabricAnswers : CordovaPlugin() {
         return {
             val event = ShareEvent()
             if (obj != null) {
-                if (obj.has("method"))
-                    event.putMethod(obj.getString("method"))
-                if (obj.has("contentName"))
-                    event.putContentName(obj.getString("contentName"))
-                if (obj.has("contentType"))
-                    event.putContentType(obj.getString("contentType"))
-                if (obj.has("contentId"))
-                    event.putContentId(obj.getString("contentId"))
-                if (obj.has("custom"))
-                    putCustom(event, obj.getJSONObject("custom"))
+                val dict = ParamDict(obj)
+                dict.getString("method")?.let { event.putMethod(it) }
+                dict.getString("contentName")?.let { event.putContentName(it) }
+                dict.getString("contentType")?.let { event.putContentType(it) }
+                dict.getString("contentId")?.let { event.putContentId(it) }
+                dict.getJSONObject("custom")?.let { putCustom(event, it) }
             }
             Answers.getInstance().logShare(event)
         }
@@ -156,16 +146,12 @@ public class FabricAnswers : CordovaPlugin() {
         return {
             val event = RatingEvent()
             if (obj != null) {
-                if (obj.has("rating"))
-                    event.putRating(obj.getInt("rating"))
-                if (obj.has("contentName"))
-                    event.putContentName(obj.getString("contentName"))
-                if (obj.has("contentType"))
-                    event.putContentType(obj.getString("contentType"))
-                if (obj.has("contentId"))
-                    event.putContentId(obj.getString("contentId"))
-                if (obj.has("custom"))
-                    putCustom(event, obj.getJSONObject("custom"))
+                val dict = ParamDict(obj)
+                dict.getNumber("rating")?.let { event.putRating(it.toInt()) }
+                dict.getString("contentName")?.let { event.putContentName(it) }
+                dict.getString("contentType")?.let { event.putContentType(it) }
+                dict.getString("contentId")?.let { event.putContentId(it) }
+                dict.getJSONObject("custom")?.let { putCustom(event, it) }
             }
             Answers.getInstance().logRating(event)
         }
@@ -176,12 +162,10 @@ public class FabricAnswers : CordovaPlugin() {
         return {
             val event = SignUpEvent()
             if (obj != null) {
-                if (obj.has("method"))
-                    event.putMethod(obj.getString("method"))
-                if (obj.has("success"))
-                    event.putSuccess(obj.getBoolean("success"))
-                if (obj.has("custom"))
-                    putCustom(event, obj.getJSONObject("custom"))
+                val dict = ParamDict(obj)
+                dict.getString("method")?.let { event.putMethod(it) }
+                dict.getBoolean("success")?.let { event.putSuccess(it) }
+                dict.getJSONObject("custom")?.let { putCustom(event, it) }
             }
             Answers.getInstance().logSignUp(event)
         }
@@ -192,12 +176,10 @@ public class FabricAnswers : CordovaPlugin() {
         return {
             val event = LoginEvent()
             if (obj != null) {
-                if (obj.has("method"))
-                    event.putMethod(obj.getString("method"))
-                if (obj.has("success"))
-                    event.putSuccess(obj.getBoolean("success"))
-                if (obj.has("custom"))
-                    putCustom(event, obj.getJSONObject("custom"))
+                val dict = ParamDict(obj)
+                dict.getString("method")?.let { event.putMethod(it) }
+                dict.getBoolean("success")?.let { event.putSuccess(it) }
+                dict.getJSONObject("custom")?.let { putCustom(event, it) }
             }
             Answers.getInstance().logLogin(event)
         }
@@ -208,10 +190,9 @@ public class FabricAnswers : CordovaPlugin() {
         return {
             val event = InviteEvent()
             if (obj != null) {
-                if (obj.has("method"))
-                    event.putMethod(obj.getString("method"))
-                if (obj.has("custom"))
-                    putCustom(event, obj.getJSONObject("custom"))
+                val dict = ParamDict(obj)
+                dict.getString("method")?.let { event.putMethod(it) }
+                dict.getJSONObject("custom")?.let { putCustom(event, it) }
             }
             Answers.getInstance().logInvite(event)
         }
@@ -222,10 +203,9 @@ public class FabricAnswers : CordovaPlugin() {
         return {
             val event = LevelStartEvent()
             if (obj != null) {
-                if (obj.has("levelName"))
-                    event.putLevelName(obj.getString("levelName"))
-                if (obj.has("custom"))
-                    putCustom(event, obj.getJSONObject("custom"))
+                val dict = ParamDict(obj)
+                dict.getString("levelName")?.let { event.putLevelName(it) }
+                dict.getJSONObject("custom")?.let { putCustom(event, it) }
             }
             Answers.getInstance().logLevelStart(event)
         }
@@ -236,14 +216,11 @@ public class FabricAnswers : CordovaPlugin() {
         return {
             val event = LevelEndEvent()
             if (obj != null) {
-                if (obj.has("levelName"))
-                    event.putLevelName(obj.getString("levelName"))
-                if (obj.has("score"))
-                    event.putScore(obj.getInt("score"))
-                if (obj.has("success"))
-                    event.putSuccess(obj.getBoolean("success"))
-                if (obj.has("custom"))
-                    putCustom(event, obj.getJSONObject("custom"))
+                val dict = ParamDict(obj)
+                dict.getString("levelName")?.let { event.putLevelName(it) }
+                dict.getNumber("score")?.let { event.putScore(it) }
+                dict.getBoolean("success")?.let { event.putSuccess(it) }
+                dict.getJSONObject("custom")?.let { putCustom(event, it) }
             }
             Answers.getInstance().logLevelEnd(event)
         }
@@ -252,10 +229,10 @@ public class FabricAnswers : CordovaPlugin() {
     public fun eventCustom(args: JSONArray): (() -> Unit) {
         val obj = if (args.length() > 0) args.getJSONObject(0) else null
         return {
-            val event = CustomEvent(obj?.getString("name") ?: "NoName")
+            val event = CustomEvent(obj?.let { ParamDict(it) }?.getString("name") ?: "NoName")
             if (obj != null) {
-                if (obj.has("attributes"))
-                    putCustom(event, obj.getJSONObject("attributes"))
+                val dict = ParamDict(obj)
+                dict.getJSONObject("attributes")?.let { putCustom(event, it) }
             }
             Answers.getInstance().logCustom(event)
         }
