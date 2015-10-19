@@ -18,6 +18,9 @@
 	</js-module>
 	
 	<platform name="android">
+        <dependency id="org.fathens.cordova.plugin.lang.Kotlin"
+            url="https://github.com/fathens/Cordova-Plugin-Kotlin.git" commit="feature/hook_script" />
+
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="FabricCrashlyticsPlugin">
 				<param name="android-package" value="org.fathens.cordova.plugin.fabric.FabricCrashlytics"/>
@@ -27,8 +30,8 @@
 			</feature>
 		</config-file>
 		
-		<source-file src="platforms/android/src/main/kotlin/FabricCrashlytics.kt" target-dir="kotlin"/>
-		<source-file src="platforms/android/src/main/kotlin/FabricAnswers.kt" target-dir="kotlin"/>
+		<source-file src="platforms/android/src/main/kotlin/FabricCrashlytics.kt" target-dir="kotlin/org.fathens.cordova.plugin.fabric.Crashlytics"/>
+		<source-file src="platforms/android/src/main/kotlin/FabricAnswers.kt" target-dir="kotlin/org.fathens.cordova.plugin.fabric.Crashlytics"/>
 
 		<hook type="after_plugin_install" src="platforms/android/hooks/after_plugin_install.js"/>
 		<hook type="before_plugin_uninstall" src="platforms/android/hooks/before_plugin_uninstall.js"/>
