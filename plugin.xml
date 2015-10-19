@@ -38,6 +38,9 @@
 	</platform>
 	
     <platform name="ios">
+        <dependency id="org.fathens.cordova.plugin.lang.Swift"
+            url="https://github.com/fathens/Cordova-Plugin-Swift.git" commit="featuer/hook_script" />
+    
         <config-file parent="/*" target="config.xml">
             <feature name="FabricCrashlyticsPlugin">
                 <param name="ios-package" value="FabricCrashlytics"/>
