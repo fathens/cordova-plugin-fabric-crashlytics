@@ -25,10 +25,9 @@ cat "$file" | awk '
         print $0
         plugin = 1
     }
-    /mavenCentral/ && maven == 0 {
+    /mavenCentral/ {
         sub("[^ ].*", "maven { url '\''https://maven.fabric.io/public'\'' }")
         print $0
-        maven = 1
     }
     /^dependencies / {
         compile=1
