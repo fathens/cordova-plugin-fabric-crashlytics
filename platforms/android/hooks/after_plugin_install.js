@@ -25,7 +25,6 @@ module.exports = function(context) {
 		write_properties();
 
 		var script = path.join(make_platform_dir(pluginDir), 'hooks', 'after_plugin_install.sh');
-		process.stdout.write("Running " + script + "\n");
 		var child = child_process.execFile(script, [], {
 			cwd : platformDir
 		}, function(error) {
