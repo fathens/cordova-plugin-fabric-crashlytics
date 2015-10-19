@@ -19,7 +19,7 @@
 	
 	<platform name="android">
         <dependency id="org.fathens.cordova.plugin.lang.Kotlin"
-            url="https://github.com/fathens/Cordova-Plugin-Kotlin.git" commit="devel" />
+            url="https://github.com/fathens/Cordova-Plugin-Kotlin.git" commit="develop" />
 
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="FabricCrashlyticsPlugin">
