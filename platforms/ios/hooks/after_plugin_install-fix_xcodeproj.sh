@@ -9,8 +9,6 @@ echo "#### Fix project.pbxproj"
 proj="$(find . -maxdepth 1 -name '*.xcodeproj')"
 echo "Fixing $(pwd)/$proj"
 
-grep SWIFT_OBJC_BRIDGING_HEADER "$proj/project.pbxproj" || echo 'NONE'
-
 project_name="$(basename "${proj%%.xcodeproj}")"
 
 cat <<EOF | ruby
@@ -25,5 +23,3 @@ end
 
 project.save
 EOF
-
-grep SWIFT_OBJC_BRIDGING_HEADER "$proj/project.pbxproj" || echo 'NONE'
