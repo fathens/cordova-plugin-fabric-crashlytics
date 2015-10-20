@@ -13,5 +13,4 @@ cat <<EOF | while read name; do subrun "$name"; done
 podfile
 fix_xcodeproj
 initialize
-api_key
 EOF
