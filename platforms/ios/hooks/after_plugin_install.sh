@@ -3,8 +3,6 @@ set -eu
 
 plugin_id=$1
 
-grep SWIFT_OBJC_BRIDGING_HEADER $(find . -maxdepth 2 -name 'project.pbxproj') || echo 'NONE'
-
 prefix="$(cd $(dirname $0); pwd)/after_plugin_install"
 
 subrun() {
