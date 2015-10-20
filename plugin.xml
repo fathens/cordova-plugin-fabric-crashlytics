@@ -52,7 +52,7 @@
             </feature>
         </config-file>
         
-        <config-file target="*-Info.plist" parent="">
+        <config-file target="*-Info.plist" parent="CFBundleDevelopmentRegion">
             <key>Fabric</key>
             <dict>
                 <key>APIKey</key>
