@@ -2,7 +2,7 @@
 
 require 'xcodeproj'
 
-proj = Dir.glob('platforms/ios/*.xcodeproj')[0]
+proj = Dir.glob('*.xcodeproj')[0]
 puts "Editing #{proj}"
 
 project = Xcodeproj::Project.open proj
