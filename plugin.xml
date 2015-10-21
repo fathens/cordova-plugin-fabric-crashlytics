@@ -38,6 +38,11 @@
 	</platform>
 	
     <platform name="ios">
+        <dependency id="org.fathens.cordova.plugin.lang.Swift"
+            url="https://github.com/fathens/Cordova-Plugin-Swift.git" commit="feature/swift_down" />
+        
+        <preference name="API_KEY" />
+    
         <config-file parent="/*" target="config.xml">
             <feature name="FabricCrashlyticsPlugin">
                 <param name="ios-package" value="FabricCrashlytics"/>
@@ -47,9 +52,25 @@
             </feature>
         </config-file>
         
+        <config-file target="*-Info.plist" parent="Fabric">
+            <dict>
+                <key>APIKey</key>
+                <string>$API_KEY</string>
+                <key>Kits</key>
+                <array>
+                    <dict>
+                        <key>KitInfo</key>
+                        <dict/>
+                        <key>KitName</key>
+                        <string>Crashlytics</string>
+                    </dict>
+                </array>
+            </dict>
+        </config-file>
+        
         <source-file src="platforms/ios/src/FabricCrashlytics.swift"/>
         <source-file src="platforms/ios/src/FabricAnswers.swift"/>
-        <header-file src="platforms/ios/src/fabric-Bridging-Header.h"/>
+        <bridging-header-file src="platforms/ios/src/fabric-Bridging-Header.h"/>
         
         <hook type="after_plugin_install" src="platforms/ios/hooks/after_plugin_install.js"/>
         <hook type="before_plugin_uninstall" src="platforms/ios/hooks/before_plugin_uninstall.js"/>

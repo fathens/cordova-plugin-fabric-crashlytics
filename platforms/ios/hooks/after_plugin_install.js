@@ -1,37 +1,161 @@
 #!/usr/bin/env node
 var child_process = require('child_process');
 
+var log = function() {
+	var args = Array.prototype.map.call(arguments, function(value) {
+		if (typeof value === 'string') {
+			return value;
+		} else {
+			return JSON.stringify(value, null, '\t')
+		}
+	});
+	process.stdout.write(args.join(" ") + '\n');
+}
+
 module.exports = function(context) {
+	var async = context.requireCordovaModule('cordova-lib/node_modules/request/node_modules/form-data/node_modules/async');
 	var fs = context.requireCordovaModule('fs');
 	var path = context.requireCordovaModule('path');
 	var deferral = context.requireCordovaModule('q').defer();
 
-	var make_platform_dir = function(base) {
-		return path.join(base, 'platforms', 'ios');
+	var platformDir = path.join(context.opts.projectRoot, 'platforms', 'ios');
+
+	var podfile = function(next) {
+		var target = path.join(platformDir, 'Podfile');
+		var lines = ["pod 'Fabric'",
+		             "pod 'Crashlytics'"];
+		log("Adding ", target, ": ", lines);
+		fs.appendFile(target, lines.join('\n'), 'utf-8', next);
 	}
-	var platformDir = make_platform_dir(context.opts.projectRoot)
-	var pluginDir = path.join(context.opts.projectRoot, 'plugins', context.opts.plugin.id);
 
-	var main = function() {
-		process.stdout.write("################################ Start preparing\n")
+	var addInitCode = function(next) {
+		var target_name = 'AppDelegate.m';
 
-		var script = path.join(make_platform_dir(pluginDir), 'hooks', 'after_plugin_install.sh');
-		var child = child_process.execFile(script, [ context.opts.plugin.id ], {
-			cwd : platformDir
-		}, function(error) {
-			if (error) {
-				deferral.reject(error);
-			} else {
-				process.stdout.write("################################ Finish preparing\n\n")
-				deferral.resolve();
-			}
-		});
+		var reducer = function(list, next) {
+			async.reduce(list, [], function(a, item, next) {
+				next(null, a.concat(item));
+			}, next);
+		}
+
+		var findFiles = function(dir, next) {
+			async.waterfall(
+					[
+					function(next) {
+						fs.readdir(dir, next);
+					},
+					function(list, next) {
+						async.map(list, function(item, next) {
+							var file = path.resolve(dir, item);
+							async.waterfall(
+									[
+									function(next) {
+										fs.stat(file, next);
+									},
+									function(stat, next) {
+										if (stat.isDirectory()) {
+											findFiles(file, next);
+										} else {
+											var result = path.basename(file) === target_name ? [file] : [];
+											next(null, result);
+										}
+									}
+									 ],next);
+						}, next);
+					},
+					reducer
+					 ], next);
+		}
+		var modify = function(target, next) {
+			log("Editing ", target);
+			
+			async.waterfall(
+					[
+					function(next) {
+						fs.readFile(target, 'utf-8', next);
+					},
+					function(content, next) {
+						var lines = content.split('\n');
+						var cond = {
+								did: 0,
+								import: 1
+						}
+						async.map(lines, function(line, next) {
+							var adjustIndent = function(content) {
+								var first = line.match(/^[ \t]*/);
+								var indent = first.length > 0 ? first[0] : '';
+								return indent + content;
+							}
+							
+							var m = [];
+							var addInitCall = function() {
+								if (line.indexOf('didFinishLaunchingWithOptions') > -1) {
+									cond.did = 1;
+								}
+								if (cond.did === 1 && line.indexOf('return') > -1) {
+									m.push(adjustIndent('[Fabric with:@[CrashlyticsKit]];'));
+									cond.did = 0;
+								}
+							}
+							var addImport = function() {
+								if (cond.import === 1 && line.indexOf('#import') > -1) {
+									m.push(adjustIndent('#import <Fabric/Fabric.h>'))
+									m.push(adjustIndent('#import <Crashlytics/Crashlytics.h>'));
+									cond.import = 0;
+								}
+							}
+							addInitCall();
+							addImport();
+							m.push(line);
+							next(null, m);
+						}, next);
+					},
+					reducer,
+					function(lines, next) {
+						fs.writeFile(target, lines.join('\n'), 'utf-8', next);
+					}
+					 ], next);
+		}
+		async.waterfall(
+				[
+				function(next) {
+					findFiles(platformDir, next);
+				},
+				function(files, next) {
+					if (files.length > 0) {
+						next(null, files[0]);
+					} else {
+						next('NotFound: ' + target_name);
+					}
+				},
+				modify,
+				 ],next);
+	}
+
+	var fixXcodeproj = function(next) {
+		var script = path.join(path.dirname(context.scriptLocation), 'after_plugin_install-fix_xcodeproj.rb');
+		var child = child_process.execFile(script, [context.opts.plugin.id], {cwd : platformDir}, next);
 		child.stdout.on('data', function(data) {
 			process.stdout.write(data);
 		});
 		child.stderr.on('data', function(data) {
 			process.stderr.write(data);
 		});
+	}
+
+	var main = function() {
+		async.parallel(
+				{
+					'Podfile': podfile,
+					'Add init code': addInitCode,
+					'Fix Xcodeproj': fixXcodeproj
+				},
+				function(err, result) {
+					if (err) {
+						deferral.reject(err);
+					} else {
+						deferral.resolve(result);
+					}
+				});
 	}
 	main();
 	return deferral.promise;
