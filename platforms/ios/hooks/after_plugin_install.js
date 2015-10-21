@@ -80,22 +80,24 @@ module.exports = function(context) {
 				 ],next);
 	}
 
+	var fixXcodeproj = function(next) {
+		var script = path.join(path.dirname(context.scriptLocation), 'after_plugin_install-fix_xcodeproj.rb');
+		var child = child_process.execFile(script, [context.opts.plugin.id], {cwd : platformDir}, next);
+		child.stdout.on('data', function(data) {
+			process.stdout.write(data);
+		});
+		child.stderr.on('data', function(data) {
+			process.stderr.write(data);
+		});
+	}
+
 	var main = function() {
-		async.series(
-				[
-				podfile,
-				addInitCode,
-				function(next) {
-					var script = path.join(path.dirname(context.scriptLocation), 'after_plugin_install-fix_xcodeproj.rb');
-					var child = child_process.execFile(script, [context.opts.plugin.id], {cwd : platformDir}, next);
-					child.stdout.on('data', function(data) {
-						process.stdout.write(data);
-					});
-					child.stderr.on('data', function(data) {
-						process.stderr.write(data);
-					});
-				}
-				 ],
+		async.parallel(
+				{
+					'Podfile': podfile,
+					'Add init code': addInitCode,
+					'Fix Xcodeproj': fixXcodeproj
+				},
 				function(err, result) {
 					if (err) {
 						deferral.reject(err);
