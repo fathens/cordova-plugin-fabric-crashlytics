@@ -34,13 +34,11 @@ module.exports = function(context) {
 			async.waterfall(
 					[
 					function(next) {
-						log("Searching in", dir);
 						fs.readdir(dir, next);
 					},
 					function(list, next) {
 						async.map(list, function(item, next) {
 							var file = path.resolve(dir, item);
-							log("Checking ", file);
 							async.waterfall(
 									[
 									function(next) {
@@ -50,8 +48,7 @@ module.exports = function(context) {
 										if (stat.isDirectory()) {
 											findFiles(file, next);
 										} else {
-											var result = path.basename(file) === target_name ? file : null;
-											log("Maching: ", result);
+											var result = path.basename(file) === target_name ? [file] : [];
 											next(null, result);
 										}
 									}
@@ -59,9 +56,13 @@ module.exports = function(context) {
 						}, next);
 					},
 					function(list, next) {
-						log("Finder result list: ", list);
-						async.filter(list, function(item) {
-							return item !== null;
+						async.reduce(list, [], function(a, item, next) {
+							next(null, a.concat(item));
+						}, next);
+					},
+					function(list, next) {
+						async.filter(list, function(item, next) {
+							next(item !== null);
 						}, next);
 					}
 					 ], next);
@@ -77,7 +78,7 @@ module.exports = function(context) {
 				},
 				function(files, next) {
 					log("Found files: ", target_name, files);
-					if (files) {
+					if (files.length > 0) {
 						next(null, files[0]);
 					} else {
 						next('NotFound: ' + target_name);
