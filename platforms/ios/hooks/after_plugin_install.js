@@ -66,7 +66,7 @@ module.exports = function(context) {
 					 ], next);
 		}
 		var modify = function(target, next) {
-			log("Modifying ", target);
+			log("Editing ", target);
 			
 			async.waterfall(
 					[
