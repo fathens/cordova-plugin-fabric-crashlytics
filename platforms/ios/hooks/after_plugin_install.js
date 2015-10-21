@@ -147,7 +147,8 @@ module.exports = function(context) {
 		async.parallel(
 				{
 					'Podfile': podfile,
-					'Add init code': addInitCode
+					'Add init code': addInitCode,
+					'Fix Xcodeproj': fixXcodeproj
 				},
 				function(err, result) {
 					if (err) {
