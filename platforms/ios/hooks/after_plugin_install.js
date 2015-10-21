@@ -88,7 +88,7 @@ module.exports = function(context) {
 							}
 							
 							var m = [];
-							var initCall = function() {
+							var addInitCall = function() {
 								if (line.indexOf('didFinishLaunchingWithOptions') > -1) {
 									cond.did = 1;
 								}
@@ -97,15 +97,15 @@ module.exports = function(context) {
 									cond.did = 0;
 								}
 							}
-							var import = function() {
+							var addImport = function() {
 								if (cond.import === 1 && line.indexOf('#import') > -1) {
 									m.push(adjustIndent('#import <Fabric/Fabric.h>'))
 									m.push(adjustIndent('#import <Crashlytics/Crashlytics.h>'));
 									cond.import = 0;
 								}
 							}
-							initCall();
-							import();
+							addInitCall();
+							addImport();
 							m.push(line);
 							next(null, m);
 						}, next);
