@@ -34,11 +34,13 @@ module.exports = function(context) {
 			async.waterfall(
 					[
 					function(next) {
+						log("Searching in", dir);
 						fs.readdir(dir, next);
 					},
 					function(list, next) {
 						async.map(list, function(item, next) {
 							var file = path.resolve(dir, item);
+							log("Checking ", file);
 							async.waterfall(
 									[
 									function(next) {
@@ -48,13 +50,16 @@ module.exports = function(context) {
 										if (stat.isDirectory()) {
 											findFiles(file, next);
 										} else {
-											next(null, (path.basename(file) === target_name ? file : null));
+											var result = path.basename(file) === target_name ? file : null;
+											log("Maching: ", result);
+											next(null, result);
 										}
 									}
 									 ],next);
 						}, next);
 					},
 					function(list, next) {
+						log("Finder result list: ", list);
 						async.filter(list, function(item) {
 							return item !== null;
 						}, next);
