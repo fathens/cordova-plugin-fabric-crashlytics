@@ -30,6 +30,13 @@ module.exports = function(context) {
 
 	var addInitCode = function(next) {
 		var target_name = 'AppDelegate.m';
+
+		var reducer = function(list, next) {
+			async.reduce(list, [], function(a, item, next) {
+				next(null, a.concat(item));
+			}, next);
+		}
+
 		var findFiles = function(dir, next) {
 			async.waterfall(
 					[
@@ -55,16 +62,59 @@ module.exports = function(context) {
 									 ],next);
 						}, next);
 					},
-					function(list, next) {
-						async.reduce(list, [], function(a, item, next) {
-							next(null, a.concat(item));
-						}, next);
-					}
+					reducer
 					 ], next);
 		}
 		var modify = function(target, next) {
-			log("Modifying ", file);
-			next(null, null);
+			log("Modifying ", target);
+			
+			async.waterfall(
+					[
+					function(next) {
+						fs.readFile(target, 'utf-8', next);
+					},
+					function(content, next) {
+						var lines = content.split('\n');
+						var cond = {
+								did: 0,
+								import: 1
+						}
+						async.map(lines, function(line, next) {
+							var adjustIndent = function(content) {
+								var first = line.match(/^[ \t]*/);
+								log("Adjusting Indent: " + first);
+								var indent = first.length > 0 ? first[0] : '';
+								return indent + content;
+							}
+							
+							var m = [];
+							var initCall = function() {
+								if (line.indexOf('didFinishLaunchingWithOptions') > -1) {
+									cond.did = 1;
+								}
+								if (cond.did === 1 && line.indexOf('return') > -1) {
+									m.push(adjustIndent('[Fabric with:@[CrashlyticsKit]];'));
+									cond.did = 0;
+								}
+							}
+							var import = function() {
+								if (cond.import === 1 && line.indexOf('#import') > -1) {
+									m.push(adjustIndent('#import <Fabric/Fabric.h>'))
+									m.push(adjustIndent('#import <Crashlytics/Crashlytics.h>'));
+									cond.import = 0;
+								}
+							}
+							initCall();
+							import();
+							m.push(line);
+							next(null, m);
+						}, next);
+					},
+					reducer,
+					function(lines, next) {
+						fs.writeFile(target, lines.join('\n'), 'utf-8', next);
+					}
+					 ], next);
 		}
 		async.waterfall(
 				[
@@ -72,7 +122,6 @@ module.exports = function(context) {
 					findFiles(platformDir, next);
 				},
 				function(files, next) {
-					log("Found files: ", target_name, files);
 					if (files.length > 0) {
 						next(null, files[0]);
 					} else {
