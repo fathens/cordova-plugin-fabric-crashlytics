@@ -39,7 +39,7 @@
 	
     <platform name="ios">
         <dependency id="org.fathens.cordova.plugin.lang.Swift"
-            url="https://github.com/fathens/Cordova-Plugin-Swift.git" commit="feature/swift_down" />
+            url="https://github.com/fathens/Cordova-Plugin-Swift.git" commit="master" />
         
         <preference name="API_KEY" />
     
