@@ -59,11 +59,6 @@ module.exports = function(context) {
 						async.reduce(list, [], function(a, item, next) {
 							next(null, a.concat(item));
 						}, next);
-					},
-					function(list, next) {
-						async.filter(list, function(item, next) {
-							next(item !== null);
-						}, next);
 					}
 					 ], next);
 		}
