@@ -82,7 +82,6 @@ module.exports = function(context) {
 						async.map(lines, function(line, next) {
 							var adjustIndent = function(content) {
 								var first = line.match(/^[ \t]*/);
-								log("Adjusting Indent: " + first);
 								var indent = first.length > 0 ? first[0] : '';
 								return indent + content;
 							}
