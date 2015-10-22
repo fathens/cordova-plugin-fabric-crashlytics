@@ -13,10 +13,10 @@ var log = function() {
 }
 
 module.exports = function(context) {
-	var async = context.requireCordovaModule('cordova-lib/node_modules/request/node_modules/form-data/node_modules/async');
 	var fs = context.requireCordovaModule('fs');
 	var path = context.requireCordovaModule('path');
 	var deferral = context.requireCordovaModule('q').defer();
+	var async = context.requireCordovaModule(path.join('request', 'node_modules', 'form-data', 'node_modules', 'async'));
 
 	var platformDir = path.join(context.opts.projectRoot, 'platforms', 'ios');
 
