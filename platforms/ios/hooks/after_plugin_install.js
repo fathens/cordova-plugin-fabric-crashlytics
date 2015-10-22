@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-var child_process = require('child_process');
 
 var log = function() {
 	var args = Array.prototype.map.call(arguments, function(value) {
@@ -18,6 +17,7 @@ module.exports = function(context) {
 	var glob = context.requireCordovaModule('glob');
 	var deferral = context.requireCordovaModule('q').defer();
 	var async = context.requireCordovaModule(path.join('request', 'node_modules', 'form-data', 'node_modules', 'async'));
+	var xcode = context.requireCordovaModule('xcode');
 
 	var platformDir = path.join(context.opts.projectRoot, 'platforms', 'ios');
 
@@ -94,14 +94,34 @@ module.exports = function(context) {
 	}
 
 	var fixXcodeproj = function(next) {
-		var script = path.join(path.dirname(context.scriptLocation), 'after_plugin_install-fix_xcodeproj.rb');
-		var child = child_process.execFile(script, [context.opts.plugin.id], {cwd : platformDir}, next);
-		child.stdout.on('data', function(data) {
-			process.stdout.write(data);
-		});
-		child.stderr.on('data', function(data) {
-			process.stderr.write(data);
-		});
+		var modify = function(target, next) {
+			log("Editing ", target);
+			var proj = xcode.project(target);
+			async.waterfall(
+					[
+					function(next) {
+						proj.parse(next);
+					},
+					function(next) {
+						
+						fs.writeFile(target, proj.writeSync(), null, next);
+					}
+					 ], next);
+		}
+		async.waterfall(
+				[
+				function(next) {
+					glob(path.join(platformDir, '*.xcodeproj', 'project.pbxproj'), null, next);
+				},
+				function(files, next) {
+					if (files.length > 0) {
+						next(null, files[0]);
+					} else {
+						next('NotFound: xcodeproj');
+					}
+				},
+				modify
+				 ], next);
 	}
 
 	var main = function() {
