@@ -117,13 +117,14 @@ module.exports = function(context) {
 
 	var main = function() {
 		async.parallel(
-				{
-					'Podfile': podfile,
-					'Add init code': addInitCode,
-					'Fix Xcodeproj': fixXcodeproj
-				},
+				[
+				podfile,
+				addInitCode,
+				fixXcodeproj
+				],
 				function(err, result) {
 					if (err) {
+						log(err);
 						deferral.reject(err);
 					} else {
 						deferral.resolve(result);
