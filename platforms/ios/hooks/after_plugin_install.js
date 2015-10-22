@@ -21,14 +21,6 @@ module.exports = function(context) {
 
 	var platformDir = path.join(context.opts.projectRoot, 'platforms', 'ios');
 
-	var podfile = function(next) {
-		var target = path.join(platformDir, 'Podfile');
-		var lines = ["pod 'Fabric'",
-		             "pod 'Crashlytics'"];
-		log("Adding ", target, ": ", lines);
-		fs.appendFile(target, lines.join('\n'), 'utf-8', next);
-	}
-
 	var addInitCode = function(next) {
 		var target_name = 'AppDelegate.m';
 
@@ -141,7 +133,6 @@ module.exports = function(context) {
 	var main = function() {
 		async.parallel(
 				[
-				podfile,
 				addInitCode,
 				fixXcodeproj
 				],

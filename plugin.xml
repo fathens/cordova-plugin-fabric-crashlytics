@@ -68,6 +68,11 @@
             </dict>
         </config-file>
         
+        <podfile>
+            <pod name="Fabric" />
+            <pod name="Crashlytics" />
+        </podfile>
+        
         <source-file src="platforms/ios/src/FabricCrashlytics.swift"/>
         <source-file src="platforms/ios/src/FabricAnswers.swift"/>
         <bridging-header-file src="platforms/ios/src/fabric-Bridging-Header.h"/>
