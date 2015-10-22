@@ -103,7 +103,21 @@ module.exports = function(context) {
 						proj.parse(next);
 					},
 					function(next) {
-						
+						var title = 'Fabric';
+						var phase = proj.addBuildPhase([], 'PBXShellScriptBuildPhase', title);
+						phase.buildPhase.name = title;
+						phase.buildPhase.shellPath = '/bin/sh';
+						phase.buildPhase.shellScript = ['"./Pods/Fabric/Fabric.framework/run',
+						                                process.env.FABRIC_API_KEY,
+						                                process.env.FABRIC_BUILD_SECRET].join(' ') + '"';
+						var targets = proj.pbxNativeTarget();
+						for (var key in targets) {
+							var list = targets[key]['buildPhases'];
+							if (list) list.push({
+								value: phase.uuid,
+								comment: title
+							});
+						}
 						fs.writeFile(target, proj.writeSync(), null, next);
 					}
 					 ], next);
