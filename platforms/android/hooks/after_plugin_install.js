@@ -63,7 +63,7 @@ module.exports = function(context) {
 								cond.classpath = 1;
 							}
 						}
-						if (cond.plugin == 0 && line.indexOf('apply plugin:') > -1) {
+						if (cond.plugin === 0 && line.indexOf('apply plugin:') > -1) {
 							adding = "apply plugin: 'io.fabric'";
 							cond.plugin = 1;
 						}
