@@ -15,6 +15,7 @@ var log = function() {
 module.exports = function(context) {
 	var fs = context.requireCordovaModule('fs');
 	var path = context.requireCordovaModule('path');
+	var glob = context.requireCordovaModule('glob');
 	var deferral = context.requireCordovaModule('q').defer();
 	var async = context.requireCordovaModule(path.join('request', 'node_modules', 'form-data', 'node_modules', 'async'));
 
@@ -37,34 +38,6 @@ module.exports = function(context) {
 			}, next);
 		}
 
-		var findFiles = function(dir, next) {
-			async.waterfall(
-					[
-					function(next) {
-						fs.readdir(dir, next);
-					},
-					function(list, next) {
-						async.map(list, function(item, next) {
-							var file = path.resolve(dir, item);
-							async.waterfall(
-									[
-									function(next) {
-										fs.stat(file, next);
-									},
-									function(stat, next) {
-										if (stat.isDirectory()) {
-											findFiles(file, next);
-										} else {
-											var result = path.basename(file) === target_name ? [file] : [];
-											next(null, result);
-										}
-									}
-									 ],next);
-						}, next);
-					},
-					reducer
-					 ], next);
-		}
 		var modify = function(target, next) {
 			log("Editing ", target);
 			
@@ -118,7 +91,7 @@ module.exports = function(context) {
 		async.waterfall(
 				[
 				function(next) {
-					findFiles(platformDir, next);
+					glob(path.join(platformDir, '**', target_name), null, next);
 				},
 				function(files, next) {
 					if (files.length > 0) {
