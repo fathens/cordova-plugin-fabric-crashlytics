@@ -9,7 +9,7 @@ var log = function() {
 			return JSON.stringify(value, null, '\t')
 		}
 	});
-	process.stdout.write(args.join(" ") + '\n');
+	process.stdout.write(args.join('') + '\n');
 }
 
 module.exports = function(context) {
