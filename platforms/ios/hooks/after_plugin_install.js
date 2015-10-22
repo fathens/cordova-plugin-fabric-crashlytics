@@ -32,12 +32,6 @@ module.exports = function(context) {
 	var addInitCode = function(next) {
 		var target_name = 'AppDelegate.m';
 
-		var reducer = function(list, next) {
-			async.reduce(list, [], function(a, item, next) {
-				next(null, a.concat(item));
-			}, next);
-		}
-
 		var modify = function(target, next) {
 			log("Editing ", target);
 			
@@ -47,12 +41,11 @@ module.exports = function(context) {
 						fs.readFile(target, 'utf-8', next);
 					},
 					function(content, next) {
-						var lines = content.split('\n');
 						var cond = {
 								did: 0,
 								import: 1
 						}
-						async.map(lines, function(line, next) {
+						var lines = content.split('\n').map(function(line) {
 							var adjustIndent = function(content) {
 								var first = line.match(/^[ \t]*/);
 								var indent = first.length > 0 ? first[0] : '';
@@ -60,29 +53,25 @@ module.exports = function(context) {
 							}
 							
 							var m = [];
-							var addInitCall = function() {
-								if (line.indexOf('didFinishLaunchingWithOptions') > -1) {
-									cond.did = 1;
-								}
-								if (cond.did === 1 && line.indexOf('return') > -1) {
-									m.push(adjustIndent('[Fabric with:@[CrashlyticsKit]];'));
-									cond.did = 0;
-								}
+							if (line.indexOf('didFinishLaunchingWithOptions') > -1) {
+								cond.did = 1;
 							}
-							var addImport = function() {
-								if (cond.import === 1 && line.indexOf('#import') > -1) {
-									m.push(adjustIndent('#import <Fabric/Fabric.h>'))
-									m.push(adjustIndent('#import <Crashlytics/Crashlytics.h>'));
-									cond.import = 0;
-								}
+							if (cond.did === 1 && line.indexOf('return') > -1) {
+								m.push(adjustIndent('[Fabric with:@[CrashlyticsKit]];'));
+								cond.did = 0;
 							}
-							addInitCall();
-							addImport();
+							if (cond.import === 1 && line.indexOf('#import') > -1) {
+								m.push(adjustIndent('#import <Fabric/Fabric.h>'))
+								m.push(adjustIndent('#import <Crashlytics/Crashlytics.h>'));
+								cond.import = 0;
+							}
 							m.push(line);
-							next(null, m);
-						}, next);
+							return m;
+						}).reduce(function(a, b) {
+							return a.concat(b);
+						}, []);
+						next(null, lines);
 					},
-					reducer,
 					function(lines, next) {
 						fs.writeFile(target, lines.join('\n'), 'utf-8', next);
 					}
