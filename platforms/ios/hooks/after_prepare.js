@@ -85,29 +85,6 @@ module.exports = function(context) {
         }, next);
     }
 
-    var editPlist = function(next) {
-        onFirstFile(path.join(platformDir, '*', '*-Info.plist'), function(target, next) {
-            async.waterfall([
-                function(next) {
-                    fs.readFile(target, 'utf-8', next);
-                },
-                function(content, next) {
-                    var info = plist.parse(content);
-                    info.Fabric = {
-                        APIKey: process.env.FABRIC_API_KEY,
-                        Kits: [
-                            {
-                                KitInfo: {},
-                                KitName: "Crashlytics"
-                            }
-                        ]
-                    };
-                    fs.writeFile(target, plist.build(info), null, next);
-                }
-            ], next);
-        }, next);
-    }
-
     var fixXcodeproj = function(next) {
         onFirstFile(path.join(platformDir, '*.xcodeproj', 'project.pbxproj'), function(target, next) {
             var proj = xcode.project(target);
@@ -140,7 +117,6 @@ module.exports = function(context) {
     var main = function() {
         async.parallel([
             addInitCode,
-            editPlist,
             fixXcodeproj
         ],
         function(err, result) {
