@@ -46,6 +46,7 @@
                 <config-file parent="/*" target="config.xml">
                     <feature name="FabricCrashlyticsPlugin">
                         <param name="ios-package" value="FabricCrashlytics"/>
+                        <param name="onload" value="true" />
                     </feature>
                     <feature name="FabricAnswersPlugin">
                         <param name="ios-package" value="FabricAnswers"/>
@@ -77,7 +78,7 @@
                 <source-file src="platforms/ios/src/FabricAnswers.swift"/>
                 <bridging-header-file src="platforms/ios/src/fabric-Bridging-Header.h"/>
 
-                <hook type="after_prepare" src="platforms/ios/hooks/after_prepare.js"/>
+                <hook type="after_prepare" src="platforms/ios/hooks/after_prepare.rb"/>
                 <hook type="before_plugin_uninstall" src="platforms/ios/hooks/before_plugin_uninstall.js"/>
             </platform>
         </plugin>

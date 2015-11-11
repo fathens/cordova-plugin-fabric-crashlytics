@@ -24,6 +24,10 @@ extension CDVInvokedUrlCommand {
 
 @objc(FabricCrashlytics)
 class FabricCrashlytics: CDVPlugin {
+    override func pluginInitialize() {
+        Fabric.with([Crashlytics.self])
+    }
+
     private func frame(command: CDVInvokedUrlCommand, _ proc: () -> Void) {
         proc()
         commandDelegate!.sendPluginResult(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
