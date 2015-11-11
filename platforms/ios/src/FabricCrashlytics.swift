@@ -24,6 +24,14 @@ extension CDVInvokedUrlCommand {
 
 @objc(FabricCrashlytics)
 class FabricCrashlytics: CDVPlugin {
+    override func pluginInitialize() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "finishLaunching", name: UIApplicationDidFinishLaunchingNotification, object: nil);
+    }
+    
+    func finishLaunching(notification: NSNotification) {
+        Fabric.with([Crashlytics.self])
+    }
+
     private func frame(command: CDVInvokedUrlCommand, _ proc: () -> Void) {
         proc()
         commandDelegate!.sendPluginResult(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
