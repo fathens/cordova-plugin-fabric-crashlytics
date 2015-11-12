@@ -12,7 +12,7 @@ project.targets.each do |target|
     phase.name == title
   end
   if found != nil then
-    puts "#{project}: already added '#{title}'"
+    puts "Already added '#{title}': #{project}"
   else
     phase = target.new_shell_script_build_phase(title)
     puts "Adding '#{phase}' to #{target}: #{project}"
