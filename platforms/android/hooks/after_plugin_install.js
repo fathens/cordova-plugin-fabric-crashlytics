@@ -24,7 +24,7 @@ module.exports = function(context) {
 		var file_path = path.join(platformDir, 'fabric.properties');
 		var lines = [ "apiSecret=" + process.env.FABRIC_BUILD_SECRET, "apiKey=" + process.env.FABRIC_API_KEY,
 				"betaDistributionReleaseNotesFilePath=" + process.env.RELEASE_NOTE_PATH,
-				"betaDistributionGroupAliases=" + process.env.CRASHLYTICS_GROUPS, "" ]
+				"betaDistributionGroupAliases=" + process.env.FABRIC_CRASHLYTICS_GROUPS, "" ]
 		log("Writing ", file_path);
 		fs.writeFile(file_path, lines.join("\n"), 'utf-8', next);
 	}
