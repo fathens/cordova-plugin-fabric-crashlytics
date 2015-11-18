@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin id="org.fathens.cordova.plugin.fabric.Crashlytics" version="1.2.10" xmlns="http://www.phonegap.com/ns/plugins/1.0">
+<plugin id="org.fathens.cordova.plugin.fabric.Crashlytics" version="1.2.12" xmlns="http://www.phonegap.com/ns/plugins/1.0">
     <name>Crashlytics</name>
     <description>Cordova Plugin for Fabric/Crashlytics</description>
     <license>MIT</license>
@@ -73,7 +73,6 @@
 
         <source-file src="platforms/ios/src/FabricCrashlytics.swift"/>
         <source-file src="platforms/ios/src/FabricAnswers.swift"/>
-        <bridging-header-file src="platforms/ios/src/fabric-Bridging-Header.h"/>
 
         <hook type="after_prepare" src="platforms/ios/hooks/after_prepare.rb"/>
     </platform>

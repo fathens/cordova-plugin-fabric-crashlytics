@@ -1,4 +1,7 @@
 import Foundation
+import Cordova
+import Fabric
+import Crashlytics
 
 extension Dictionary {
     func getString(key: Key) -> String? {

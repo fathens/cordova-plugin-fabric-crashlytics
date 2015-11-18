@@ -31,13 +31,11 @@ project.recreate_user_schemes
 group = project.new_group "Sources"
 
 sources = Dir.glob("src/*.swift").map { |path| group.new_file(path) }
-header = Dir.glob("src/*.h").map { |path| group.new_file(path) }.first
 
 target.add_file_references(sources)
 
 build_settings(project,
-  "ENABLE_BITCODE" => "NO",
-  "SWIFT_OBJC_BRIDGING_HEADER" => header.path
+  "ENABLE_BITCODE" => "NO"
 )
 
 project.save
@@ -47,7 +45,8 @@ echo "################################"
 echo "#### pod install"
 
 cat <<EOF > Podfile
-platform :ios, "8.0"
+platform :ios, "9.0"
+use_frameworks!
 
 pod "Cordova"
 pod "Fabric"
