@@ -73,7 +73,6 @@
 
         <source-file src="platforms/ios/src/FabricCrashlytics.swift"/>
         <source-file src="platforms/ios/src/FabricAnswers.swift"/>
-        <bridging-header-file src="platforms/ios/src/fabric-Bridging-Header.h"/>
 
         <hook type="after_prepare" src="platforms/ios/hooks/after_prepare.rb"/>
     </platform>
