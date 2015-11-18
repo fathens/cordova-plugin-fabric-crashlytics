@@ -45,7 +45,7 @@ echo "################################"
 echo "#### pod install"
 
 cat <<EOF > Podfile
-platform :ios, "8.0"
+platform :ios, "9.0"
 use_frameworks!
 
 pod "Cordova"
