@@ -1,7 +1,6 @@
 var cordova = require("cordova/exec");
 
 function exec(name, args) {
-	console.log("Calling FabricCrashlyticsPlugin." + name + ": " + args);
 	cordova(function() {}, function(error) {
 		alert("Error on " + name + "\n" + error);
 	}, "FabricCrashlyticsPlugin", name, args);
