@@ -55,7 +55,7 @@ module.exports = function(context) {
 							cond.compile = 0;
 						}
 						if (cond.classpath === 0) {
-							var found = line.match(/classpath 'com\.android\.tools\.build:gradle:1\.[1-9]\.0\+'/);
+							var found = line.match(/classpath 'com\.android\.tools\.build:gradle:1\.[1-9]\./);
 							if (found && found.length > 0) {
 								adding = "classpath 'io.fabric.tools:gradle:1.+'";
 								cond.classpath = 1;
