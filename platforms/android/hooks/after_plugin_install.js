@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-var async = require('async');
-
 var log = function() {
 	var args = Array.prototype.map.call(arguments, function(value) {
 		if (typeof value === 'string') {
@@ -18,6 +16,7 @@ module.exports = function(context) {
 	var path = context.requireCordovaModule('path');
 	var glob = context.requireCordovaModule('glob');
 	var deferral = context.requireCordovaModule('q').defer();
+	var async = context.requireCordovaModule(path.join('request', 'node_modules', 'form-data', 'node_modules', 'async'));
 
 	var platformDir = path.join(context.opts.projectRoot, 'platforms', 'android');
 
