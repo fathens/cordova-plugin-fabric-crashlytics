@@ -51,7 +51,7 @@ module.exports = function(context) {
 						var result = [line];
 						var adding;
 						if (cond.compile === 1) {
-							adding = "compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') { transitive = true }";
+							adding = "compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') { transitive = true }";
 							cond.compile = 0;
 						}
 						if (cond.classpath === 0) {
