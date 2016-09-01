@@ -32,7 +32,7 @@ module.exports = function(context) {
 		var indent = (first && first.length > 0) ? first[0] : '';
 		return indent + content;
 	}
-	
+
 	var build_gradle = function(next) {
 		var target = path.join(platformDir, 'build.gradle');
 		log("Editing ", target);
@@ -83,10 +83,10 @@ module.exports = function(context) {
 				}
 				 ], next);
 	}
-	
+
 	var main_activity = function(next) {
 		var target_name = 'MainActivity.java';
-		
+
 		var modify = function(target, next) {
 			log("Editing ", target);
 			async.waterfall(
