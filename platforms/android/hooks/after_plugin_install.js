@@ -124,7 +124,6 @@ module.exports = function(context) {
 	var main = function() {
 		async.parallel(
 				[
-				write_properties,
 				build_gradle,
 				main_activity
 				],
