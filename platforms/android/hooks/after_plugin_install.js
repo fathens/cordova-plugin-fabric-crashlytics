@@ -32,7 +32,7 @@ module.exports = function(context) {
 		var indent = (first && first.length > 0) ? first[0] : '';
 		return indent + content;
 	}
-	
+
 	var build_gradle = function(next) {
 		var target = path.join(platformDir, 'build.gradle');
 		log("Editing ", target);
@@ -51,11 +51,11 @@ module.exports = function(context) {
 						var result = [line];
 						var adding;
 						if (cond.compile === 1) {
-							adding = "compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') { transitive = true }";
+							adding = "compile('com.crashlytics.sdk.android:crashlytics:2.6.2@aar') { transitive = true }";
 							cond.compile = 0;
 						}
 						if (cond.classpath === 0) {
-							var found = line.match(/classpath 'com\.android\.tools\.build:gradle:1\.[1-9]\./);
+							var found = line.match(/classpath 'com\.android\.tools\.build:gradle:[1-2]\.[1-9]\./);
 							if (found && found.length > 0) {
 								adding = "classpath 'io.fabric.tools:gradle:1.+'";
 								cond.classpath = 1;
@@ -83,10 +83,10 @@ module.exports = function(context) {
 				}
 				 ], next);
 	}
-	
+
 	var main_activity = function(next) {
 		var target_name = 'MainActivity.java';
-		
+
 		var modify = function(target, next) {
 			log("Editing ", target);
 			async.waterfall(

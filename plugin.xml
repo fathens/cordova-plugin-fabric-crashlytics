@@ -34,6 +34,10 @@
         <source-file src="platforms/android/src/main/kotlin/FabricCrashlytics.kt" target-dir="kotlin/org.fathens.cordova.plugin.fabric.Crashlytics"/>
         <source-file src="platforms/android/src/main/kotlin/FabricAnswers.kt" target-dir="kotlin/org.fathens.cordova.plugin.fabric.Crashlytics"/>
 
+        <config-file target="AndroidManifest.xml" parent="application">
+            <meta-data android:name="io.fabric.ApiKey" android:value="$API_KEY"/>
+        </config-file>
+
         <hook type="after_plugin_install" src="platforms/android/hooks/after_plugin_install.js"/>
     </platform>
 
