@@ -20,13 +20,6 @@ module.exports = function(context) {
 
 	var platformDir = path.join(context.opts.projectRoot, 'platforms', 'android');
 
-	var write_properties = function(next) {
-		var file_path = path.join(platformDir, 'fabric.properties');
-		var lines = ["apiSecret=" + process.env.FABRIC_BUILD_SECRET, "apiKey=" + process.env.FABRIC_API_KEY]
-		log("Writing ", file_path);
-		fs.writeFile(file_path, lines.join("\n") + "\n", 'utf-8', next);
-	}
-
 	var adjustIndent = function(base, content) {
 		var first = base.match(/^[ \t]*/);
 		var indent = (first && first.length > 0) ? first[0] : '';
