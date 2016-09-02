@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin id="org.fathens.cordova.plugin.fabric.Crashlytics" version="1.2.26" xmlns="http://www.phonegap.com/ns/plugins/1.0">
+<plugin id="org.fathens.cordova.plugin.fabric.Crashlytics" version="1.3.0" xmlns="http://www.phonegap.com/ns/plugins/1.0">
     <name>Crashlytics</name>
     <description>Cordova Plugin for Fabric/Crashlytics</description>
     <license>MIT</license>
@@ -33,6 +33,10 @@
 
         <source-file src="platforms/android/src/main/kotlin/FabricCrashlytics.kt" target-dir="kotlin/org.fathens.cordova.plugin.fabric.Crashlytics"/>
         <source-file src="platforms/android/src/main/kotlin/FabricAnswers.kt" target-dir="kotlin/org.fathens.cordova.plugin.fabric.Crashlytics"/>
+
+        <config-file target="AndroidManifest.xml" parent="application">
+            <meta-data android:name="io.fabric.ApiKey" android:value="$API_KEY"/>
+        </config-file>
 
         <hook type="after_plugin_install" src="platforms/android/hooks/after_plugin_install.js"/>
     </platform>
