@@ -16,7 +16,7 @@ module.exports = function(context) {
 	var path = context.requireCordovaModule('path');
 	var glob = context.requireCordovaModule('glob');
 	var deferral = context.requireCordovaModule('q').defer();
-	var async = context.requireCordovaModule(path.join('request', 'node_modules', 'form-data', 'node_modules', 'async'));
+	var async = context.requireCordovaModule('async');
 
 	var platformDir = path.join(context.opts.projectRoot, 'platforms', 'android');
 
