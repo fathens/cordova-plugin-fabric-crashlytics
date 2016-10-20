@@ -9,7 +9,7 @@ extension Dictionary {
     }
     
     func getDouble(_ key: Key) -> Double? {
-        return self[key].flatMap { $0 as? AnyObject }.flatMap { $0.doubleValue }
+        return self[key].flatMap { $0 as AnyObject }.flatMap { $0.doubleValue }
     }
     
     func getDecimal(_ key: Key) -> NSDecimalNumber? {
