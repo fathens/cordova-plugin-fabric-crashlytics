@@ -4,24 +4,24 @@ import Fabric
 import Crashlytics
 
 extension CDVInvokedUrlCommand {
-    func getStringAt(index: UInt) -> String {
-        return argumentAtIndex(index) as! String
+    func getStringAt(_ index: UInt) -> String {
+        return argument(at: index) as! String
     }
     
-    func getDoubleAt(index: UInt) -> Double {
-        return argumentAtIndex(index).doubleValue
+    func getDoubleAt(_ index: UInt) -> Double {
+        return (argument(at: index) as AnyObject).doubleValue
     }
     
-    func getFloatAt(index: UInt) -> Float {
-        return argumentAtIndex(index).floatValue
+    func getFloatAt(_ index: UInt) -> Float {
+        return (argument(at: index) as AnyObject).floatValue
     }
     
-    func getIntAt(index: UInt) -> Int32 {
-        return argumentAtIndex(index).intValue
+    func getIntAt(_ index: UInt) -> Int32 {
+        return (argument(at: index) as AnyObject).int32Value
     }
     
-    func getBoolAt(index: UInt) -> Bool {
-        return argumentAtIndex(index) as! Bool
+    func getBoolAt(_ index: UInt) -> Bool {
+        return argument(at: index) as! Bool
     }
 }
 
@@ -31,16 +31,16 @@ class FabricCrashlytics: CDVPlugin {
         Fabric.with([Crashlytics.self])
     }
     
-    private func frame(command: CDVInvokedUrlCommand, _ proc: () -> Void) {
+    fileprivate func frame(_ command: CDVInvokedUrlCommand, _ proc: () -> Void) {
         proc()
-        commandDelegate!.sendPluginResult(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
+        commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
     }
     
-    private func logmsg(command: CDVInvokedUrlCommand, _ proc: () -> Void = {}) {
+    fileprivate func logmsg(_ command: CDVInvokedUrlCommand, _ proc: () -> Void = {}) {
         frame(command) {
             if let v = command.arguments.first {
                 if (!(v is NSNull)) {
-                    let msg = String(v).stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                    let msg = String(describing: v).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                     if (!msg.isEmpty) {
                         CLSLogv("%@", getVaList([msg]))
                     }
@@ -50,23 +50,23 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
     
-    func log(command: CDVInvokedUrlCommand) {
+    func log(_ command: CDVInvokedUrlCommand) {
         logmsg(command)
     }
     
-    func logException(command: CDVInvokedUrlCommand) {
+    func logException(_ command: CDVInvokedUrlCommand) {
         logmsg(command) {
             Crashlytics.sharedInstance().throwException()
         }
     }
     
-    func crash(command: CDVInvokedUrlCommand) {
+    func crash(_ command: CDVInvokedUrlCommand) {
         logmsg(command) {
             Crashlytics.sharedInstance().crash()
         }
     }
     
-    func setBool(command: CDVInvokedUrlCommand) {
+    func setBool(_ command: CDVInvokedUrlCommand) {
         let key = command.getStringAt(0)
         let value = command.getBoolAt(1)
         frame(command) {
@@ -74,7 +74,7 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
     
-    func setDouble(command: CDVInvokedUrlCommand) {
+    func setDouble(_ command: CDVInvokedUrlCommand) {
         let key = command.getStringAt(0)
         let value = command.getDoubleAt(1)
         frame(command) {
@@ -82,7 +82,7 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
     
-    func setFloat(command: CDVInvokedUrlCommand) {
+    func setFloat(_ command: CDVInvokedUrlCommand) {
         let key = command.getStringAt(0)
         let value = command.getFloatAt(1)
         frame(command) {
@@ -90,7 +90,7 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
     
-    func setInt(command: CDVInvokedUrlCommand) {
+    func setInt(_ command: CDVInvokedUrlCommand) {
         let key = command.getStringAt(0)
         let value = command.getIntAt(1)
         frame(command) {
@@ -98,21 +98,21 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
     
-    func setUserIdentifier(command: CDVInvokedUrlCommand) {
+    func setUserIdentifier(_ command: CDVInvokedUrlCommand) {
         let value = command.getStringAt(0)
         frame(command) {
             Crashlytics.sharedInstance().setUserIdentifier(value)
         }
     }
     
-    func setUserName(command: CDVInvokedUrlCommand) {
+    func setUserName(_ command: CDVInvokedUrlCommand) {
         let value = command.getStringAt(0)
         frame(command) {
             Crashlytics.sharedInstance().setUserName(value)
         }
     }
     
-    func setUserEmail(command: CDVInvokedUrlCommand) {
+    func setUserEmail(_ command: CDVInvokedUrlCommand) {
         let value = command.getStringAt(0)
         frame(command) {
             Crashlytics.sharedInstance().setUserEmail(value)

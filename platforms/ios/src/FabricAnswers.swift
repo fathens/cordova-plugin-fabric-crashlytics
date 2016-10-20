@@ -4,34 +4,34 @@ import Fabric
 import Crashlytics
 
 extension Dictionary {
-    func getString(key: Key) -> String? {
+    func getString(_ key: Key) -> String? {
         return self[key] as? String
     }
     
-    func getDouble(key: Key) -> Double? {
+    func getDouble(_ key: Key) -> Double? {
         return self[key].flatMap { $0 as? AnyObject }.flatMap { $0.doubleValue }
     }
     
-    func getDecimal(key: Key) -> NSDecimalNumber? {
-        return getDouble(key).map { NSDecimalNumber(double: $0) }
+    func getDecimal(_ key: Key) -> NSDecimalNumber? {
+        return getDouble(key).map { NSDecimalNumber(value: $0 as Double) }
     }
     
-    func getBool(key: Key) -> Int? {
+    func getBool(_ key: Key) -> Int? {
         return self[key].flatMap { $0 as? Bool }.map { $0 ? 1 : 0 }
     }
 }
 
 @objc(FabricAnswers)
 class FabricAnswers: CDVPlugin {
-    private func frame(command: CDVInvokedUrlCommand, _ proc: (Dictionary<String, AnyObject>?, Dictionary<String, AnyObject>?) -> Void) {
+    fileprivate func frame(_ command: CDVInvokedUrlCommand, _ proc: (Dictionary<String, AnyObject>?, Dictionary<String, AnyObject>?) -> Void) {
         let dict = command.arguments.first.flatMap { $0 as? Dictionary<String, AnyObject> }
         let custom = dict?["custom"] as? Dictionary<String, AnyObject>
         
         proc(dict, custom)
-        commandDelegate!.sendPluginResult(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
+        commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
     }
     
-    func eventPurchase(command: CDVInvokedUrlCommand) {
+    func eventPurchase(_ command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
             let price = dict?.getDecimal("itemPrice")
             let currency = dict?.getString("currency")
@@ -39,110 +39,110 @@ class FabricAnswers: CDVPlugin {
             let name = dict?.getString("itemName")
             let type = dict?.getString("itemType")
             let id = dict?.getString("itemId")
-            Answers.logPurchaseWithPrice(price, currency: currency, success: success, itemName: name, itemType: type, itemId: id, customAttributes: custom)
+            Answers.logPurchase(withPrice: price, currency: currency, success: success as NSNumber?, itemName: name, itemType: type, itemId: id, customAttributes: custom)
         }
     }
     
-    func eventAddToCart(command: CDVInvokedUrlCommand) {
+    func eventAddToCart(_ command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
             let price = dict?.getDecimal("itemPrice")
             let currency = dict?.getString("currency")
             let name = dict?.getString("itemName")
             let type = dict?.getString("itemType")
             let id = dict?.getString("itemId")
-            Answers.logAddToCartWithPrice(price, currency: currency, itemName: name, itemType: type, itemId: id, customAttributes: custom)
+            Answers.logAddToCart(withPrice: price, currency: currency, itemName: name, itemType: type, itemId: id, customAttributes: custom)
         }
     }
     
-    func eventStartCheckout(command: CDVInvokedUrlCommand) {
+    func eventStartCheckout(_ command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
             let price = dict?.getDecimal("totalPrice")
             let currency = dict?.getString("currency")
             let count = dict?.getDouble("itemCount")
-            Answers.logStartCheckoutWithPrice(price, currency: currency, itemCount: count, customAttributes: custom)
+            Answers.logStartCheckout(withPrice: price, currency: currency, itemCount: count as NSNumber?, customAttributes: custom)
         }
     }
     
-    func eventContentView(command: CDVInvokedUrlCommand) {
+    func eventContentView(_ command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
             let name = dict?.getString("contentName")
             let type = dict?.getString("contentType")
             let id = dict?.getString("contentId")
-            Answers.logContentViewWithName(name, contentType: type, contentId: id, customAttributes: custom)
+            Answers.logContentView(withName: name, contentType: type, contentId: id, customAttributes: custom)
         }
     }
     
-    func eventSearch(command: CDVInvokedUrlCommand) {
+    func eventSearch(_ command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
             let query = dict?.getString("query")
-            Answers.logSearchWithQuery(query, customAttributes: custom)
+            Answers.logSearch(withQuery: query, customAttributes: custom)
         }
     }
     
-    func eventShare(command: CDVInvokedUrlCommand) {
+    func eventShare(_ command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
             let method = dict?.getString("method")
             let name = dict?.getString("contentName")
             let type = dict?.getString("contentType")
             let id = dict?.getString("contentId")
-            Answers.logShareWithMethod(method, contentName: name, contentType: type, contentId: id, customAttributes: custom)
+            Answers.logShare(withMethod: method, contentName: name, contentType: type, contentId: id, customAttributes: custom)
         }
     }
     
-    func eventRating(command: CDVInvokedUrlCommand) {
+    func eventRating(_ command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
             let rating = dict?.getDouble("rating")
             let name = dict?.getString("contentName")
             let type = dict?.getString("contentType")
             let id = dict?.getString("contentId")
-            Answers.logRating(rating, contentName: name, contentType: type, contentId: id, customAttributes: custom)
+            Answers.logRating(rating as NSNumber?, contentName: name, contentType: type, contentId: id, customAttributes: custom)
         }
     }
     
-    func eventSignUp(command: CDVInvokedUrlCommand) {
+    func eventSignUp(_ command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
             let method = dict?.getString("method")
             let success = dict?.getBool("success")
-            Answers.logSignUpWithMethod(method, success: success, customAttributes: custom)
+            Answers.logSignUp(withMethod: method, success: success as NSNumber?, customAttributes: custom)
         }
     }
     
-    func eventLogin(command: CDVInvokedUrlCommand) {
+    func eventLogin(_ command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
             let method = dict?.getString("method")
             let success = dict?.getBool("success")
-            Answers.logLoginWithMethod(method, success: success, customAttributes: custom)
+            Answers.logLogin(withMethod: method, success: success as NSNumber?, customAttributes: custom)
         }
     }
     
-    func eventInvite(command: CDVInvokedUrlCommand) {
+    func eventInvite(_ command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
             let method = dict?.getString("method")
-            Answers.logInviteWithMethod(method, customAttributes: custom)
+            Answers.logInvite(withMethod: method, customAttributes: custom)
         }
     }
     
-    func eventLevelStart(command: CDVInvokedUrlCommand) {
+    func eventLevelStart(_ command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
             let name = dict?.getString("levelName")
             Answers.logLevelStart(name, customAttributes: custom)
         }
     }
     
-    func eventLevelEnd(command: CDVInvokedUrlCommand) {
+    func eventLevelEnd(_ command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
             let name = dict?.getString("levelName")
             let score = dict?.getDouble("score")
             let success = dict?.getBool("success")
-            Answers.logLevelEnd(name, score: score, success: success, customAttributes: custom)
+            Answers.logLevelEnd(name, score: score as NSNumber?, success: success as NSNumber?, customAttributes: custom)
         }
     }
     
-    func eventCustom(command: CDVInvokedUrlCommand) {
+    func eventCustom(_ command: CDVInvokedUrlCommand) {
         frame(command) { dict, custom in
             let name = dict?.getString("name")
             let attrs = dict?["attributes"] as? Dictionary<String, AnyObject>
-            Answers.logCustomEventWithName(name == nil ? "NoName": name!, customAttributes: attrs)
+            Answers.logCustomEvent(withName: name == nil ? "NoName": name!, customAttributes: attrs)
         }
     }
 }
