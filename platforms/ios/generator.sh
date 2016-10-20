@@ -2,7 +2,7 @@
 
 cd "$(dirname $0)"
 
-title="Cordova-Plugin-$(basename "$(cd ../../; pwd)")"
+title="CordovaPlugin_$(basename "$(cd ../../; pwd)")"
 
 echo "################################"
 echo "#### Generate Xcodeproject"
@@ -25,7 +25,7 @@ end
 project_name = "$title"
 project = Xcodeproj::Project.new "#{project_name}.xcodeproj"
 
-target = project.new_target(:framework, 'GeneratedProduct', :ios)
+target = project.new_target(:framework, '$title', :ios)
 project.recreate_user_schemes
 
 group = project.new_group "Sources"
@@ -48,9 +48,11 @@ cat <<EOF > Podfile
 platform :ios, "9.0"
 use_frameworks!
 
-pod "Cordova"
-pod "Fabric"
-pod "Crashlytics"
+target '$title' do
+    pod "Cordova"
+    pod "Fabric"
+    pod "Crashlytics"
+end
 EOF
 
 pod install
