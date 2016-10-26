@@ -70,7 +70,7 @@
             </dict>
         </config-file>
 
-        <podfile>
+        <podfile swift_version="3.0">
             <pod name="Fabric" />
             <pod name="Crashlytics" />
         </podfile>
