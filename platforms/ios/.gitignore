@@ -2,4 +2,5 @@
 /*.xcworkspace/
 /Pods/
 /Podfile
-/Podfile.lock
+/Gemfile
+/*.lock
