@@ -29,6 +29,8 @@
         <fabric>
             <instance>new com.crashlytics.android.Crashlytics()</instance>
         </fabric>
+
+        <framework src="platforms/android/plugin.gradle" custom="true" type="gradleReference"/>
     </platform>
 
     <platform name="ios">
