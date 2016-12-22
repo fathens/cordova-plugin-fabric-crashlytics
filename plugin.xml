@@ -13,11 +13,7 @@
         <clobbers target="plugin.Fabric.Crashlytics"/>
     </js-module>
 
-    <js-module name="FabricAnswersPlugin" src="www/answers.js">
-        <clobbers target="plugin.Fabric.Answers"/>
-    </js-module>
-
-    <preference name="API_KEY" />
+    <dependency id="org.fathens.cordova.plugin.Fabric" url="https://github.com/fathens/Cordova-Plugin-Fabric.git" commit="master" />
 
     <platform name="android">
         <dependency id="org.fathens.cordova.plugin.lang.Kotlin" url="https://github.com/fathens/Cordova-Plugin-Kotlin.git" commit="master" />
@@ -26,19 +22,15 @@
             <feature name="FabricCrashlyticsPlugin">
                 <param name="android-package" value="org.fathens.cordova.plugin.fabric.FabricCrashlytics"/>
             </feature>
-            <feature name="FabricAnswersPlugin">
-                <param name="android-package" value="org.fathens.cordova.plugin.fabric.FabricAnswers"/>
-            </feature>
         </config-file>
 
         <source-file src="platforms/android/src/main/kotlin/FabricCrashlytics.kt" target-dir="kotlin/org.fathens.cordova.plugin.fabric.Crashlytics"/>
-        <source-file src="platforms/android/src/main/kotlin/FabricAnswers.kt" target-dir="kotlin/org.fathens.cordova.plugin.fabric.Crashlytics"/>
 
-        <config-file target="AndroidManifest.xml" parent="application">
-            <meta-data android:name="io.fabric.ApiKey" android:value="$API_KEY"/>
-        </config-file>
+        <fabric>
+            <instance>new com.crashlytics.android.Crashlytics()</instance>
+        </fabric>
 
-        <hook type="after_plugin_install" src="platforms/android/hooks/after_plugin_install.js"/>
+        <framework src="platforms/android/plugin.gradle" custom="true" type="gradleReference"/>
     </platform>
 
     <platform name="ios">
@@ -49,35 +41,12 @@
                 <param name="ios-package" value="FabricCrashlytics"/>
                 <param name="onload" value="true" />
             </feature>
-            <feature name="FabricAnswersPlugin">
-                <param name="ios-package" value="FabricAnswers"/>
-            </feature>
-        </config-file>
-
-        <config-file target="*-Info.plist" parent="Fabric">
-            <dict>
-                <key>APIKey</key>
-                <string>$API_KEY</string>
-                <key>Kits</key>
-                <array>
-                    <dict>
-                        <key>KitInfo</key>
-                        <dict/>
-                        <key>KitName</key>
-                        <string>Crashlytics</string>
-                    </dict>
-                </array>
-            </dict>
         </config-file>
 
         <podfile swift_version="3.0">
-            <pod name="Fabric" />
             <pod name="Crashlytics" />
         </podfile>
 
         <source-file src="platforms/ios/src/FabricCrashlytics.swift"/>
-        <source-file src="platforms/ios/src/FabricAnswers.swift"/>
-
-        <hook type="after_prepare" src="platforms/ios/hooks/after_prepare.rb"/>
     </platform>
 </plugin>
