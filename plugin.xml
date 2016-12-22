@@ -13,8 +13,6 @@
         <clobbers target="plugin.Fabric.Crashlytics"/>
     </js-module>
 
-    <preference name="API_KEY" />
-
     <dependency id="org.fathens.cordova.plugin.Fabric" url="https://github.com/fathens/Cordova-Plugin-Fabric.git" commit="master" />
 
     <platform name="android">
