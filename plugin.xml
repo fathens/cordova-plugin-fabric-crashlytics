@@ -24,7 +24,7 @@
             </feature>
         </config-file>
 
-        <source-file src="platforms/android/src/main/kotlin/FabricCrashlytics.kt" target-dir="kotlin/org.fathens.cordova.plugin.fabric.Crashlytics"/>
+        <source-file src="platforms/android/src/main/kotlin/FabricCrashlytics.kt" target-dir="kotlin/org.fathens.cordova.plugin.fabric"/>
 
         <fabric>
             <instance>new com.crashlytics.android.Crashlytics()</instance>
