@@ -13,11 +13,9 @@
         <clobbers target="plugin.Fabric.Crashlytics"/>
     </js-module>
 
-    <dependency id="org.fathens.cordova.plugin.Fabric" url="https://github.com/fathens/Cordova-Plugin-Fabric.git" commit="master" />
+    <dependency id="org.fathens.cordova.plugin.fabric.Base" url="https://github.com/fathens/Cordova-Plugin-Fabric.git" commit="master" />
 
     <platform name="android">
-        <dependency id="org.fathens.cordova.plugin.lang.Kotlin" url="https://github.com/fathens/Cordova-Plugin-Kotlin.git" commit="master" />
-
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="FabricCrashlyticsPlugin">
                 <param name="android-package" value="org.fathens.cordova.plugin.fabric.FabricCrashlytics"/>
@@ -27,15 +25,14 @@
         <source-file src="platforms/android/src/main/kotlin/FabricCrashlytics.kt" target-dir="kotlin/org.fathens.cordova.plugin.fabric"/>
 
         <fabric>
-            <instance>new com.crashlytics.android.Crashlytics()</instance>
+            <import>com.crashlytics.android.Crashlytics</import>
+            <instance>Crashlytics()</instance>
         </fabric>
 
         <framework src="platforms/android/plugin.gradle" custom="true" type="gradleReference"/>
     </platform>
 
     <platform name="ios">
-        <dependency id="org.fathens.cordova.plugin.lang.Swift" url="https://github.com/fathens/Cordova-Plugin-Swift.git" commit="master" />
-
         <config-file parent="/*" target="config.xml">
             <feature name="FabricCrashlyticsPlugin">
                 <param name="ios-package" value="FabricCrashlytics"/>
@@ -43,10 +40,15 @@
             </feature>
         </config-file>
 
+        <source-file src="platforms/ios/src/FabricCrashlytics.swift"/>
+
         <podfile swift_version="3.0">
             <pod name="Crashlytics" />
         </podfile>
 
-        <source-file src="platforms/ios/src/FabricCrashlytics.swift"/>
+        <fabric name="Crashlytics">
+            <import>Crashlytics</import>
+            <instance>Crashlytics.self</instance>
+        </fabric>
     </platform>
 </plugin>
