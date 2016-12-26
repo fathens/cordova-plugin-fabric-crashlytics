@@ -33,7 +33,6 @@
     </platform>
 
     <platform name="ios">
-
         <config-file parent="/*" target="config.xml">
             <feature name="FabricCrashlyticsPlugin">
                 <param name="ios-package" value="FabricCrashlytics"/>
@@ -47,7 +46,7 @@
             <pod name="Crashlytics" />
         </podfile>
 
-        <fabric>
+        <fabric name="Crashlytics">
             <import>Crashlytics</import>
             <instance>Crashlytics.self</instance>
         </fabric>
