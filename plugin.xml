@@ -27,7 +27,8 @@
         <source-file src="platforms/android/src/main/kotlin/FabricCrashlytics.kt" target-dir="kotlin/org.fathens.cordova.plugin.fabric"/>
 
         <fabric>
-            <instance>new com.crashlytics.android.Crashlytics()</instance>
+            <import>com.crashlytics.android.Crashlytics</import>
+            <instance>new Crashlytics()</instance>
         </fabric>
 
         <framework src="platforms/android/plugin.gradle" custom="true" type="gradleReference"/>
@@ -43,10 +44,15 @@
             </feature>
         </config-file>
 
+        <source-file src="platforms/ios/src/FabricCrashlytics.swift"/>
+
         <podfile swift_version="3.0">
             <pod name="Crashlytics" />
         </podfile>
 
-        <source-file src="platforms/ios/src/FabricCrashlytics.swift"/>
+        <fabric>
+            <import>Crashlytics</import>
+            <instance>Crashlytics.self</instance>
+        </fabric>
     </platform>
 </plugin>
