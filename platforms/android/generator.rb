@@ -36,7 +36,7 @@ PLUGIN_DIR = PLATFORM_DIR.dirname.dirname
 
 build_gradle = PLATFORM_DIR/'build.gradle'
 write_build_gradle build_gradle
-modify_gradle build_gradle, ENV['FABRIC_API_KEY'], ENV['FABRIC_BUILD_SECRET']
+Fabric::modify_gradle build_gradle, ENV['FABRIC_API_KEY'], ENV['FABRIC_BUILD_SECRET']
 
 log "Generating project done"
 log "Open by AndroidStudio. Thank you."
