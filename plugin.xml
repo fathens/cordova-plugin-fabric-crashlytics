@@ -28,7 +28,7 @@
 
         <fabric>
             <import>com.crashlytics.android.Crashlytics</import>
-            <instance>new Crashlytics()</instance>
+            <instance>Crashlytics()</instance>
         </fabric>
 
         <framework src="platforms/android/plugin.gradle" custom="true" type="gradleReference"/>
