@@ -36,7 +36,6 @@
         <config-file parent="/*" target="config.xml">
             <feature name="FabricCrashlyticsPlugin">
                 <param name="ios-package" value="FabricCrashlytics"/>
-                <param name="onload" value="true" />
             </feature>
         </config-file>
 
