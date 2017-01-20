@@ -41,7 +41,7 @@
 
         <source-file src="platforms/ios/src/FabricCrashlytics.swift"/>
 
-        <framework src="Crashlytics" type="podspec" spec="~> 2.4.16">
+        <framework src="Crashlytics" type="podspec">
             <bridging-header import="Crashlytics/Crashlytics.h" />
         </framework>
 
