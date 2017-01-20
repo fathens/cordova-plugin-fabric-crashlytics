@@ -16,7 +16,8 @@
   "author": "f:athens",
   "license": "MIT",
   "dependencies": {
-    "@cordova-plugin/fabric-core": "github:fathens/cordova-plugin-fabric-core#feature/npm_package"
+    "@cordova-plugin/fabric-core": "github:fathens/cordova-plugin-fabric-core#feature/npm_package",
+    "log4ts": "github:fathens/log4ts"
   },
   "devDependencies": {
     "typescript": "~2.0.10"
