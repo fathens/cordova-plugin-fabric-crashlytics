@@ -37,7 +37,7 @@ export class Crashlytics implements CrashlyticsClient {
             logger.info(msg);
         }
     }
-    
+
     async logException(msg: string): Promise<void> {
         if (this.client) {
             return this.client.logException(msg);
@@ -45,7 +45,7 @@ export class Crashlytics implements CrashlyticsClient {
             logger.warn(msg);
         }
     }
-    
+
     async crash(msg: string): Promise<void> {
         if (this.client) {
             return this.client.crash(msg);
@@ -53,7 +53,7 @@ export class Crashlytics implements CrashlyticsClient {
             logger.fatal(msg);
         }
     }
-    
+
     async setBool(key: string, value: boolean): Promise<void> {
         if (this.client) {
             return this.client.setBool(key, value);
@@ -61,7 +61,7 @@ export class Crashlytics implements CrashlyticsClient {
             logger.info(`No Fabric here ! set ${key} = ${value}`);
         }
     }
-    
+
     async setDouble(key: string, value: number): Promise<void> {
         if (this.client) {
             return this.client.setDouble(key, value);
@@ -69,7 +69,7 @@ export class Crashlytics implements CrashlyticsClient {
             logger.info(`No Fabric here ! set ${key} = ${value}`);
         }
     }
-    
+
     async setFloat(key: string, value: number): Promise<void> {
         if (this.client) {
             return this.client.setFloat(key, value);
@@ -77,7 +77,7 @@ export class Crashlytics implements CrashlyticsClient {
             logger.info(`No Fabric here ! set ${key} = ${value}`);
         }
     }
-    
+
     async setInt(key: string, value: number): Promise<void> {
         if (this.client) {
             return this.client.setInt(key, value);
@@ -85,7 +85,7 @@ export class Crashlytics implements CrashlyticsClient {
             logger.info(`No Fabric here ! set ${key} = ${value}`);
         }
     }
-    
+
     async setUserIdentifier(value: string): Promise<void> {
         if (this.client) {
             return this.client.setUserIdentifier(value);
@@ -93,7 +93,7 @@ export class Crashlytics implements CrashlyticsClient {
             logger.info(`No Fabric here ! set userIdentifier = ${value}`);
         }
     }
-    
+
     async setUserName(value: string): Promise<void> {
         if (this.client) {
             return this.client.setUserName(value);
@@ -101,7 +101,7 @@ export class Crashlytics implements CrashlyticsClient {
             logger.info(`No Fabric here ! set userNmae = ${value}`);
         }
     }
-    
+
     async setUserEmail(value: string): Promise<void> {
         if (this.client) {
             return this.client.setUserEmail(value);
