@@ -13,7 +13,7 @@
         <clobbers target="plugin.Fabric.Crashlytics"/>
     </js-module>
 
-    <dependency id="org.fathens.cordova.plugin.fabric.core" url="https://github.com/fathens/Cordova-Plugin-Fabric.git" commit="master" />
+    <dependency id="org.fathens.cordova.plugin.fabric.core" url="https://github.com/fathens/cordova-plugin-fabric-core.git" commit="master" />
 
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
