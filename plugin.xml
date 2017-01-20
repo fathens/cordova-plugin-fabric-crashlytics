@@ -46,7 +46,6 @@
         </podfile>
 
         <fabric name="Crashlytics">
-            <import>Crashlytics</import>
             <instance>Crashlytics.self</instance>
         </fabric>
     </platform>
