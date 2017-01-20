@@ -1,5 +1,5 @@
 {
-  "name": "cordova-plugin-fabric-crashlytics",
+  "name": "@cordova-plugin/fabric-crashlytics",
   "version": "1.6.1",
   "description": "Cordova Plugin for Fabric Crashlytics",
   "main": "dist/index.js",
