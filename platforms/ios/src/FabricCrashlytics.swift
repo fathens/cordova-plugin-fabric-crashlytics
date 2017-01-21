@@ -1,7 +1,4 @@
 import Foundation
-import Cordova
-import Fabric
-import Crashlytics
 
 extension CDVInvokedUrlCommand {
     func getStringAt(_ index: UInt) -> String {
