@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin id="org.fathens.cordova.plugin.fabric.Crashlytics" version="1.6.0" xmlns="http://www.phonegap.com/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+<plugin id="org.fathens.cordova.plugin.fabric.crashlytics" version="1.7.0" xmlns="http://www.phonegap.com/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>Crashlytics</name>
     <description>Cordova Plugin for Fabric/Crashlytics</description>
     <license>MIT</license>
@@ -13,7 +13,7 @@
         <clobbers target="plugin.Fabric.Crashlytics"/>
     </js-module>
 
-    <dependency id="org.fathens.cordova.plugin.fabric.Base" url="https://github.com/fathens/Cordova-Plugin-Fabric.git" commit="master" />
+    <dependency id="org.fathens.cordova.plugin.fabric.core" url="https://github.com/fathens/cordova-plugin-fabric-core.git" commit="master" />
 
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
@@ -41,12 +41,11 @@
 
         <source-file src="platforms/ios/src/FabricCrashlytics.swift"/>
 
-        <podfile swift_version="3.0">
-            <pod name="Crashlytics" />
-        </podfile>
+        <framework src="Crashlytics" type="podspec" spec="~> 3.8.3">
+            <bridging-header import="Crashlytics/Crashlytics.h" />
+        </framework>
 
         <fabric name="Crashlytics">
-            <import>Crashlytics</import>
             <instance>Crashlytics.self</instance>
         </fabric>
     </platform>
