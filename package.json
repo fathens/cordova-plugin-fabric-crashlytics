@@ -16,7 +16,7 @@
   "author": "f:athens",
   "license": "MIT",
   "dependencies": {
-    "@cordova-plugin/fabric-core": "github:fathens/cordova-plugin-fabric-core#feature/official_pods_support",
+    "@cordova-plugin/fabric-core": "github:fathens/cordova-plugin-fabric-core",
     "log4ts": "github:fathens/log4ts"
   },
   "devDependencies": {
