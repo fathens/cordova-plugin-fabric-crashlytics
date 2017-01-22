@@ -29,8 +29,6 @@ export class Crashlytics {
     static async log(msg: string): Promise<void> {
         if (client) {
             return client.log(msg);
-        } else {
-            logger.info(msg);
         }
     }
 
