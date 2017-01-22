@@ -23,90 +23,84 @@ export interface CrashlyticsClient {
     setUserEmail(value: string): Promise<void>;
 }
 
-export class Crashlytics implements CrashlyticsClient {
-    constructor() {
-        this.client = hasPlugin ? plugin.Fabric.Crashlytics : null;
-    }
+const client: CrashlyticsClient = hasPlugin ? plugin.Fabric.Crashlytics : null;
 
-    private client: CrashlyticsClient;
-
-    async log(msg: string): Promise<void> {
-        if (this.client) {
-            return this.client.log(msg);
-        } else {
-            logger.info(msg);
+export class Crashlytics {
+    static async log(msg: string): Promise<void> {
+        if (client) {
+            return client.log(msg);
         }
     }
 
-    async logException(msg: string): Promise<void> {
-        if (this.client) {
-            return this.client.logException(msg);
+    static async logException(msg: string): Promise<void> {
+        if (client) {
+            return client.logException(msg);
         } else {
-            logger.warn(msg);
+            logger.warn(() => `Crashlytics.logException: ${msg}`);
         }
     }
 
-    async crash(msg: string): Promise<void> {
-        if (this.client) {
-            return this.client.crash(msg);
+    static async crash(msg: string): Promise<void> {
+        if (client) {
+            return client.crash(msg);
         } else {
-            logger.fatal(msg);
+            logger.fatal(() => `Crashlytics.crash: ${msg}`);
         }
     }
 
-    async setBool(key: string, value: boolean): Promise<void> {
-        if (this.client) {
-            return this.client.setBool(key, value);
+    static async setBool(key: string, value: boolean): Promise<void> {
+        if (client) {
+            return client.setBool(key, value);
         } else {
-            logger.info(`No Fabric here ! set ${key} = ${value}`);
+            logger.info(() => `No Fabric here ! set ${key} = ${value}`);
         }
     }
 
-    async setDouble(key: string, value: number): Promise<void> {
-        if (this.client) {
-            return this.client.setDouble(key, value);
+    static async setDouble(key: string, value: number): Promise<void> {
+        if (client) {
+            return client.setDouble(key, value);
         } else {
-            logger.info(`No Fabric here ! set ${key} = ${value}`);
+            logger.info(() => `No Fabric here ! set ${key} = ${value}`);
         }
     }
 
-    async setFloat(key: string, value: number): Promise<void> {
-        if (this.client) {
-            return this.client.setFloat(key, value);
+    static async setFloat(key: string, value: number): Promise<void> {
+        if (client) {
+            return client.setFloat(key, value);
         } else {
-            logger.info(`No Fabric here ! set ${key} = ${value}`);
+            logger.info(() => `No Fabric here ! set ${key} = ${value}`);
         }
     }
 
-    async setInt(key: string, value: number): Promise<void> {
-        if (this.client) {
-            return this.client.setInt(key, value);
+    static async setInt(key: string, value: number): Promise<void> {
+        if (client) {
+            return client.setInt(key, value);
         } else {
-            logger.info(`No Fabric here ! set ${key} = ${value}`);
+            logger.info(() => `No Fabric here ! set ${key} = ${value}`);
         }
     }
 
-    async setUserIdentifier(value: string): Promise<void> {
-        if (this.client) {
-            return this.client.setUserIdentifier(value);
+    static async setUserIdentifier(value: string): Promise<void> {
+        if (client) {
+            return client.setUserIdentifier(value);
         } else {
-            logger.info(`No Fabric here ! set userIdentifier = ${value}`);
+            logger.info(() => `No Fabric here ! set userIdentifier = ${value}`);
         }
     }
 
-    async setUserName(value: string): Promise<void> {
-        if (this.client) {
-            return this.client.setUserName(value);
+    static async setUserName(value: string): Promise<void> {
+        if (client) {
+            return client.setUserName(value);
         } else {
-            logger.info(`No Fabric here ! set userNmae = ${value}`);
+            logger.info(() => `No Fabric here ! set userNmae = ${value}`);
         }
     }
 
-    async setUserEmail(value: string): Promise<void> {
-        if (this.client) {
-            return this.client.setUserEmail(value);
+    static async setUserEmail(value: string): Promise<void> {
+        if (client) {
+            return client.setUserEmail(value);
         } else {
-            logger.info(`No Fabric here ! set userEmail = ${value}`);
+            logger.info(() => `No Fabric here ! set userEmail = ${value}`);
         }
     }
 }
