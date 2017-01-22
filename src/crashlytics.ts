@@ -3,7 +3,7 @@ import { Logger } from "log4ts";
 
 const plugin = (window as any).plugin;
 
-const logger = new Logger("S3File");
+const logger = new Logger("Crashlytics");
 
 function isDef(typedec) {
     return !_.isEqual(typedec, 'undefined');
@@ -36,7 +36,7 @@ export class Crashlytics {
         if (client) {
             return client.logException(msg);
         } else {
-            logger.warn(() => `Crashlytics.logException: ${msg}`);
+            logger.warn(() => `logException: ${msg}`);
         }
     }
 
@@ -44,7 +44,7 @@ export class Crashlytics {
         if (client) {
             return client.crash(msg);
         } else {
-            logger.fatal(() => `Crashlytics.crash: ${msg}`);
+            logger.fatal(() => `crash: ${msg}`);
         }
     }
 
