@@ -25,8 +25,8 @@ export interface CrashlyticsClient {
 
 const client: CrashlyticsClient = hasPlugin ? plugin.Fabric.Crashlytics : null;
 
-export class Crashlytics implements CrashlyticsClient {
-    async log(msg: string): Promise<void> {
+export class Crashlytics {
+    static async log(msg: string): Promise<void> {
         if (client) {
             return client.log(msg);
         } else {
@@ -34,7 +34,7 @@ export class Crashlytics implements CrashlyticsClient {
         }
     }
 
-    async logException(msg: string): Promise<void> {
+    static async logException(msg: string): Promise<void> {
         if (client) {
             return client.logException(msg);
         } else {
@@ -42,7 +42,7 @@ export class Crashlytics implements CrashlyticsClient {
         }
     }
 
-    async crash(msg: string): Promise<void> {
+    static async crash(msg: string): Promise<void> {
         if (client) {
             return client.crash(msg);
         } else {
@@ -50,7 +50,7 @@ export class Crashlytics implements CrashlyticsClient {
         }
     }
 
-    async setBool(key: string, value: boolean): Promise<void> {
+    static async setBool(key: string, value: boolean): Promise<void> {
         if (client) {
             return client.setBool(key, value);
         } else {
@@ -58,7 +58,7 @@ export class Crashlytics implements CrashlyticsClient {
         }
     }
 
-    async setDouble(key: string, value: number): Promise<void> {
+    static async setDouble(key: string, value: number): Promise<void> {
         if (client) {
             return client.setDouble(key, value);
         } else {
@@ -66,7 +66,7 @@ export class Crashlytics implements CrashlyticsClient {
         }
     }
 
-    async setFloat(key: string, value: number): Promise<void> {
+    static async setFloat(key: string, value: number): Promise<void> {
         if (client) {
             return client.setFloat(key, value);
         } else {
@@ -74,7 +74,7 @@ export class Crashlytics implements CrashlyticsClient {
         }
     }
 
-    async setInt(key: string, value: number): Promise<void> {
+    static async setInt(key: string, value: number): Promise<void> {
         if (client) {
             return client.setInt(key, value);
         } else {
@@ -82,7 +82,7 @@ export class Crashlytics implements CrashlyticsClient {
         }
     }
 
-    async setUserIdentifier(value: string): Promise<void> {
+    static async setUserIdentifier(value: string): Promise<void> {
         if (client) {
             return client.setUserIdentifier(value);
         } else {
@@ -90,7 +90,7 @@ export class Crashlytics implements CrashlyticsClient {
         }
     }
 
-    async setUserName(value: string): Promise<void> {
+    static async setUserName(value: string): Promise<void> {
         if (client) {
             return client.setUserName(value);
         } else {
@@ -98,7 +98,7 @@ export class Crashlytics implements CrashlyticsClient {
         }
     }
 
-    async setUserEmail(value: string): Promise<void> {
+    static async setUserEmail(value: string): Promise<void> {
         if (client) {
             return client.setUserEmail(value);
         } else {
