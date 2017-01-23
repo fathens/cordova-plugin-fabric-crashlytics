@@ -52,7 +52,7 @@ export class Crashlytics {
         if (client) {
             return client.setBool(key, value);
         } else {
-            logger.info(() => `No Fabric here ! set ${key} = ${value}`);
+            logger.info(() => `No Fabric! setBool ${key} = ${value}`);
         }
     }
 
@@ -60,7 +60,7 @@ export class Crashlytics {
         if (client) {
             return client.setDouble(key, value);
         } else {
-            logger.info(() => `No Fabric here ! set ${key} = ${value}`);
+            logger.info(() => `No Fabric! setDouble ${key} = ${value}`);
         }
     }
 
@@ -68,7 +68,7 @@ export class Crashlytics {
         if (client) {
             return client.setFloat(key, value);
         } else {
-            logger.info(() => `No Fabric here ! set ${key} = ${value}`);
+            logger.info(() => `No Fabric! setFloat ${key} = ${value}`);
         }
     }
 
@@ -76,7 +76,7 @@ export class Crashlytics {
         if (client) {
             return client.setInt(key, value);
         } else {
-            logger.info(() => `No Fabric here ! set ${key} = ${value}`);
+            logger.info(() => `No Fabric! setInt ${key} = ${value}`);
         }
     }
 
@@ -84,7 +84,7 @@ export class Crashlytics {
         if (client) {
             return client.setUserIdentifier(value);
         } else {
-            logger.info(() => `No Fabric here ! set userIdentifier = ${value}`);
+            logger.info(() => `No Fabric! set userIdentifier = ${value}`);
         }
     }
 
@@ -92,7 +92,7 @@ export class Crashlytics {
         if (client) {
             return client.setUserName(value);
         } else {
-            logger.info(() => `No Fabric here ! set userNmae = ${value}`);
+            logger.info(() => `No Fabric! set userNmae = ${value}`);
         }
     }
 
@@ -100,7 +100,7 @@ export class Crashlytics {
         if (client) {
             return client.setUserEmail(value);
         } else {
-            logger.info(() => `No Fabric here ! set userEmail = ${value}`);
+            logger.info(() => `No Fabric! set userEmail = ${value}`);
         }
     }
 }
