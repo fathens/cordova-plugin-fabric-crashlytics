@@ -17,7 +17,8 @@ var names = [
 var obj = {};
 
 for (var i = 0; i < names.length; i++) {
-    obj[names[i]] = function() {
+    var methodName = names[i];
+    obj[methodName] = function() {
         var args = Array.prototype.slice.call(arguments, 0);
         return new Promise(function(resolve, reject) {
             cordova(resolve, reject, pluginName, methodName, args);
