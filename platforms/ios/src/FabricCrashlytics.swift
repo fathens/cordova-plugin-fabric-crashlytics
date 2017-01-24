@@ -112,14 +112,18 @@ class FabricCrashlytics: CDVPlugin {
         DispatchQueue.global(qos: DispatchQoS.QoSClass.utility).async(execute: proc)
     }
 
-    fileprivate func frame(_ command: CDVInvokedUrlCommand, _ proc: @escaping () -> Void) {
+    fileprivate func frame(_ command: CDVInvokedUrlCommand, _ proc: @escaping () throws -> Void) {
         fork {
-            proc()
-            self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
+            do {
+                try proc()
+                self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
+            } catch (let ex) {
+                self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_ERROR, messageAs: ex.localizedDescription), callbackId: command.callbackId)
+            }
         }
     }
 
-    fileprivate func logmsg(_ command: CDVInvokedUrlCommand, _ proc: () -> Void = {}) {
+    fileprivate func logmsg(_ command: CDVInvokedUrlCommand, _ proc: @escaping () -> Void = {}) {
         frame(command) {
             if let v = command.arguments.first {
                 if (!(v is NSNull)) {
