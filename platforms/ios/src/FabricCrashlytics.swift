@@ -45,7 +45,6 @@ class FabricCrashlytics: CDVPlugin {
 
     @objc(log:)
     func log(command: CDVInvokedUrlCommand) {
-        print("Into log method")
         logmsg(command)
     }
 
