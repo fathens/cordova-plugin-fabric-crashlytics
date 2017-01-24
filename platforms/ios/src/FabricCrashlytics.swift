@@ -43,27 +43,23 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
 
-    @objc(log:)
-    func log(command: CDVInvokedUrlCommand) {
+    func log(_ command: CDVInvokedUrlCommand) {
         logmsg(command)
     }
 
-    @objc(logException:)
-    func logException(command: CDVInvokedUrlCommand) {
+    func logException(_ command: CDVInvokedUrlCommand) {
         logmsg(command) {
             Crashlytics.sharedInstance().throwException()
         }
     }
 
-    @objc(crash:)
-    func crash(command: CDVInvokedUrlCommand) {
+    func crash(_ command: CDVInvokedUrlCommand) {
         logmsg(command) {
             Crashlytics.sharedInstance().crash()
         }
     }
 
-    @objc(setBool:)
-    func setBool(command: CDVInvokedUrlCommand) {
+    func setBool(_ command: CDVInvokedUrlCommand) {
         let key = command.getStringAt(0)
         let value = command.getBoolAt(1)
         frame(command) {
@@ -71,8 +67,7 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
 
-    @objc(setDouble:)
-    func setDouble(command: CDVInvokedUrlCommand) {
+    func setDouble(_ command: CDVInvokedUrlCommand) {
         let key = command.getStringAt(0)
         let value = command.getDoubleAt(1)
         frame(command) {
@@ -80,8 +75,7 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
 
-    @objc(setFloat:)
-    func setFloat(command: CDVInvokedUrlCommand) {
+    func setFloat(_ command: CDVInvokedUrlCommand) {
         let key = command.getStringAt(0)
         let value = command.getFloatAt(1)
         frame(command) {
@@ -89,8 +83,7 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
 
-    @objc(setInt:)
-    func setInt(command: CDVInvokedUrlCommand) {
+    func setInt(_ command: CDVInvokedUrlCommand) {
         let key = command.getStringAt(0)
         let value = command.getIntAt(1)
         frame(command) {
@@ -98,24 +91,21 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
 
-    @objc(setUserIdentifier:)
-    func setUserIdentifier(command: CDVInvokedUrlCommand) {
+    func setUserIdentifier(_ command: CDVInvokedUrlCommand) {
         let value = command.getStringAt(0)
         frame(command) {
             Crashlytics.sharedInstance().setUserIdentifier(value)
         }
     }
 
-    @objc(setUserName:)
-    func setUserName(command: CDVInvokedUrlCommand) {
+    func setUserName(_ command: CDVInvokedUrlCommand) {
         let value = command.getStringAt(0)
         frame(command) {
             Crashlytics.sharedInstance().setUserName(value)
         }
     }
 
-    @objc(setUserEmail:)
-    func setUserEmail(command: CDVInvokedUrlCommand) {
+    func setUserEmail(_ command: CDVInvokedUrlCommand) {
         let value = command.getStringAt(0)
         frame(command) {
             Crashlytics.sharedInstance().setUserEmail(value)
