@@ -33,7 +33,11 @@ export class Crashlytics {
 
     static async log(msg: string): Promise<void> {
         if (Crashlytics.client) {
-            return new Promise<void>((resolve, reject) => Crashlytics.client.log(resolve, reject, msg));
+            console.log("Crashlytics Plugin is found !");
+            return new Promise<void>((resolve, reject) => {
+                console.log("Calling Crashlytics.client.log ...");
+                Crashlytics.client.log(resolve, reject, msg);
+            });
         }
     }
 
