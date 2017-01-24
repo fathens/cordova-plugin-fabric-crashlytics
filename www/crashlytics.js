@@ -16,13 +16,13 @@ var names = [
 
 var obj = {};
 
-names.forEach(function(methodName) {
-    obj[methodName] = function() {
+for (var i = 0; i < names.length; i++) {
+    obj[names[i]] = function() {
         var args = Array.prototype.slice.call(arguments, 0);
         return new Promise(function(resolve, reject) {
             cordova(resolve, reject, pluginName, methodName, args);
         });
     };
-});
+}
 
 module.exports = obj;
