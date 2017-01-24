@@ -24,24 +24,8 @@ extension CDVInvokedUrlCommand {
 
 @objc(FabricCrashlytics)
 class FabricCrashlytics: CDVPlugin {
-    fileprivate func frame(_ command: CDVInvokedUrlCommand, _ proc: () -> Void) {
-        proc()
-        commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
-    }
 
-    fileprivate func logmsg(_ command: CDVInvokedUrlCommand, _ proc: () -> Void = {}) {
-        frame(command) {
-            if let v = command.arguments.first {
-                if (!(v is NSNull)) {
-                    let msg = String(describing: v).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-                    if (!msg.isEmpty) {
-                        CLSLogv("%@", getVaList([msg]))
-                    }
-                }
-            }
-            proc()
-        }
-    }
+    // MARK: - Cordova Commands
 
     @objc(log:)
     func log(_ command: CDVInvokedUrlCommand) {
@@ -119,6 +103,33 @@ class FabricCrashlytics: CDVPlugin {
         let value = command.getStringAt(0)
         frame(command) {
             Crashlytics.sharedInstance().setUserEmail(value)
+        }
+    }
+
+    // MARK: - Private Utillities
+
+    fileprivate func fork(_ proc: @escaping () -> Void) {
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.utility).async(execute: proc)
+    }
+
+    fileprivate func frame(_ command: CDVInvokedUrlCommand, _ proc: @escaping () -> Void) {
+        fork {
+            proc()
+            self.commandDelegate!.send(CDVPluginResult(status: CDVCommandStatus_OK), callbackId: command.callbackId)
+        }
+    }
+
+    fileprivate func logmsg(_ command: CDVInvokedUrlCommand, _ proc: () -> Void = {}) {
+        frame(command) {
+            if let v = command.arguments.first {
+                if (!(v is NSNull)) {
+                    let msg = String(describing: v).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                    if (!msg.isEmpty) {
+                        CLSLogv("%@", getVaList([msg]))
+                    }
+                }
+            }
+            proc()
         }
     }
 }
