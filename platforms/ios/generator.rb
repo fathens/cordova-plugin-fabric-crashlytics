@@ -16,17 +16,14 @@ require 'cordova_plugin_swift'
 PLATFORM_DIR = Pathname('$0').realpath.dirname
 PLUGIN_DIR = PLATFORM_DIR.dirname.dirname
 
-ENV['PLUGIN_DIR'] = PLUGIN_DIR.to_s
-
-plugin_xml = REXML::Document.new(File.open(PLUGIN_DIR/'plugin.xml'))
-
-podfile = Podfile.new(element: plugin_xml.get_elements('//platform[@name="ios"]/podfile').first)
+podfile = Podfile.from_pluginxml(PLUGIN_DIR/'plugin.xml')
 podfile.pods.unshift Pod.new(name: 'Cordova')
 podfile.swift_version ||= '3.0'
 podfile.ios_version ||= '10.0'
 
 bridge_file = PLATFORM_DIR/".Bridging-Header.h"
 File.open(bridge_file, 'w') { |dst|
+    dst.puts "#import <Cordova/CDV.h>"
     dst.puts podfile.pods.map {|p| p.bridging_headers }.flatten
 }
 
