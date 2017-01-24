@@ -5,13 +5,6 @@ const plugin = (window as any).plugin;
 
 const logger = new Logger("Crashlytics");
 
-function isDef(typedec) {
-    return !_.isEqual(typedec, 'undefined');
-}
-function hasPlugin(): boolean {
-    return isDef(typeof plugin) && isDef(typeof plugin.Fabric) && isDef(typeof plugin.Fabric.Crashlytics);
-}
-
 export interface CrashlyticsClient {
     log(msg: string): Promise<void>;
     logException(msg: string): Promise<void>;
@@ -26,8 +19,17 @@ export interface CrashlyticsClient {
 }
 
 export class Crashlytics {
+    private static _client: CrashlyticsClient;
     private static get client(): CrashlyticsClient {
-        return hasPlugin() ? plugin.Fabric.Crashlytics : null;
+        function isDef(typedec) {
+            return !_.isEqual(typedec, 'undefined');
+        }
+        if (!Crashlytics._client) {
+            if (isDef(typeof plugin) && isDef(typeof plugin.Fabric) && isDef(typeof plugin.Fabric.Crashlytics)) {
+                Crashlytics._client = plugin.Fabric.Crashlytics;
+            }
+        }
+        return Crashlytics._client;
     }
 
     static async log(msg: string): Promise<void> {
