@@ -2,7 +2,9 @@ var cordova = require("cordova/exec");
 
 var pluginName = "FabricCrashlyticsPlugin";
 
-var names = [
+var obj = {};
+
+[
 "log",
 "setBool",
 "setDouble",
@@ -12,12 +14,7 @@ var names = [
 "setUserName",
 "logException",
 "crash"
-];
-
-var obj = {};
-
-for (var i = 0; i < names.length; i++) {
-    var methodName = names[i];
+].forEach((methodName) => {
     obj[methodName] = function() {
         var resolve = arguments[0];
         var reject = arguments[1];
@@ -25,6 +22,6 @@ for (var i = 0; i < names.length; i++) {
         console.log("Calling cordova plugin: " + pluginName + "." + methodName);
         return cordova(resolve, reject, pluginName, methodName, args);
     };
-}
+});
 
 module.exports = obj;
