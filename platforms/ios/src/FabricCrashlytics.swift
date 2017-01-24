@@ -43,22 +43,26 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
 
+    @objc(log:)
     func log(_ command: CDVInvokedUrlCommand) {
         logmsg(command)
     }
 
+    @objc(logException:)
     func logException(_ command: CDVInvokedUrlCommand) {
         logmsg(command) {
             Crashlytics.sharedInstance().throwException()
         }
     }
 
+    @objc(crash:)
     func crash(_ command: CDVInvokedUrlCommand) {
         logmsg(command) {
             Crashlytics.sharedInstance().crash()
         }
     }
 
+    @objc(setBool:)
     func setBool(_ command: CDVInvokedUrlCommand) {
         let key = command.getStringAt(0)
         let value = command.getBoolAt(1)
@@ -67,6 +71,7 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
 
+    @objc(setDouble:)
     func setDouble(_ command: CDVInvokedUrlCommand) {
         let key = command.getStringAt(0)
         let value = command.getDoubleAt(1)
@@ -75,6 +80,7 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
 
+    @objc(setFloat:)
     func setFloat(_ command: CDVInvokedUrlCommand) {
         let key = command.getStringAt(0)
         let value = command.getFloatAt(1)
@@ -83,6 +89,7 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
 
+    @objc(setInt:)
     func setInt(_ command: CDVInvokedUrlCommand) {
         let key = command.getStringAt(0)
         let value = command.getIntAt(1)
@@ -91,6 +98,7 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
 
+    @objc(setUserIdentifier:)
     func setUserIdentifier(_ command: CDVInvokedUrlCommand) {
         let value = command.getStringAt(0)
         frame(command) {
@@ -98,6 +106,7 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
 
+    @objc(setUserName:)
     func setUserName(_ command: CDVInvokedUrlCommand) {
         let value = command.getStringAt(0)
         frame(command) {
@@ -105,6 +114,7 @@ class FabricCrashlytics: CDVPlugin {
         }
     }
 
+    @objc(setUserEmail:)
     func setUserEmail(_ command: CDVInvokedUrlCommand) {
         let value = command.getStringAt(0)
         frame(command) {
