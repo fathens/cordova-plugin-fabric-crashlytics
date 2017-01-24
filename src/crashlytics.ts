@@ -4,16 +4,16 @@ import { Logger } from "log4ts";
 const logger = new Logger("Crashlytics");
 
 export interface CrashlyticsClient {
-    log(msg: string): Promise<void>;
-    logException(msg: string): Promise<void>;
-    crash(msg: string): Promise<void>;
-    setBool(key: string, value: boolean): Promise<void>;
-    setDouble(key: string, value: number): Promise<void>;
-    setFloat(key: string, value: number): Promise<void>;
-    setInt(key: string, value: number): Promise<void>;
-    setUserIdentifier(value: string): Promise<void>;
-    setUserName(value: string): Promise<void>;
-    setUserEmail(value: string): Promise<void>;
+    log(resolve, reject, msg: string);
+    logException(resolve, reject, msg: string);
+    crash(resolve, reject, msg: string);
+    setBool(resolve, reject, key: string, value: boolean);
+    setDouble(resolve, reject, key: string, value: number);
+    setFloat(resolve, reject, key: string, value: number);
+    setInt(resolve, reject, key: string, value: number);
+    setUserIdentifier(resolve, reject, value: string);
+    setUserName(resolve, reject, value: string);
+    setUserEmail(resolve, reject, value: string);
 }
 
 export class Crashlytics {
@@ -33,13 +33,17 @@ export class Crashlytics {
 
     static async log(msg: string): Promise<void> {
         if (Crashlytics.client) {
-            return Crashlytics.client.log(msg);
+            console.log("Crashlytics Plugin is found !");
+            return new Promise<void>((resolve, reject) => {
+                console.log("Calling Crashlytics.client.log ...");
+                Crashlytics.client.log(resolve, reject, msg);
+            });
         }
     }
 
     static async logException(msg: string): Promise<void> {
         if (Crashlytics.client) {
-            return Crashlytics.client.logException(msg);
+            return new Promise<void>((resolve, reject) => Crashlytics.client.logException(resolve, reject, msg));
         } else {
             logger.warn(() => `logException: ${msg}`);
         }
@@ -47,7 +51,7 @@ export class Crashlytics {
 
     static async crash(msg: string): Promise<void> {
         if (Crashlytics.client) {
-            return Crashlytics.client.crash(msg);
+            return new Promise<void>((resolve, reject) => Crashlytics.client.crash(resolve, reject, msg));
         } else {
             logger.fatal(() => `crash: ${msg}`);
         }
@@ -55,7 +59,7 @@ export class Crashlytics {
 
     static async setBool(key: string, value: boolean): Promise<void> {
         if (Crashlytics.client) {
-            return Crashlytics.client.setBool(key, value);
+            return new Promise<void>((resolve, reject) => Crashlytics.client.setBool(resolve, reject, key, value));
         } else {
             logger.info(() => `No Fabric! setBool ${key} = ${value}`);
         }
@@ -63,7 +67,7 @@ export class Crashlytics {
 
     static async setDouble(key: string, value: number): Promise<void> {
         if (Crashlytics.client) {
-            return Crashlytics.client.setDouble(key, value);
+            return new Promise<void>((resolve, reject) => Crashlytics.client.setDouble(resolve, reject, key, value));
         } else {
             logger.info(() => `No Fabric! setDouble ${key} = ${value}`);
         }
@@ -71,7 +75,7 @@ export class Crashlytics {
 
     static async setFloat(key: string, value: number): Promise<void> {
         if (Crashlytics.client) {
-            return Crashlytics.client.setFloat(key, value);
+            return new Promise<void>((resolve, reject) => Crashlytics.client.setFloat(resolve, reject, key, value));
         } else {
             logger.info(() => `No Fabric! setFloat ${key} = ${value}`);
         }
@@ -79,7 +83,7 @@ export class Crashlytics {
 
     static async setInt(key: string, value: number): Promise<void> {
         if (Crashlytics.client) {
-            return Crashlytics.client.setInt(key, value);
+            return new Promise<void>((resolve, reject) => Crashlytics.client.setInt(resolve, reject, key, value));
         } else {
             logger.info(() => `No Fabric! setInt ${key} = ${value}`);
         }
@@ -87,7 +91,7 @@ export class Crashlytics {
 
     static async setUserIdentifier(value: string): Promise<void> {
         if (Crashlytics.client) {
-            return Crashlytics.client.setUserIdentifier(value);
+            return new Promise<void>((resolve, reject) => Crashlytics.client.setUserIdentifier(resolve, reject, value));
         } else {
             logger.info(() => `No Fabric! set userIdentifier = ${value}`);
         }
@@ -95,7 +99,7 @@ export class Crashlytics {
 
     static async setUserName(value: string): Promise<void> {
         if (Crashlytics.client) {
-            return Crashlytics.client.setUserName(value);
+            return new Promise<void>((resolve, reject) => Crashlytics.client.setUserName(resolve, reject, value));
         } else {
             logger.info(() => `No Fabric! set userNmae = ${value}`);
         }
@@ -103,7 +107,7 @@ export class Crashlytics {
 
     static async setUserEmail(value: string): Promise<void> {
         if (Crashlytics.client) {
-            return Crashlytics.client.setUserEmail(value);
+            return new Promise<void>((resolve, reject) => Crashlytics.client.setUserEmail(resolve, reject, value));
         } else {
             logger.info(() => `No Fabric! set userEmail = ${value}`);
         }
