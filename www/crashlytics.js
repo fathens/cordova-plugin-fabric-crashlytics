@@ -19,10 +19,10 @@ var obj = {};
 for (var i = 0; i < names.length; i++) {
     var methodName = names[i];
     obj[methodName] = function() {
-        var args = Array.prototype.slice.call(arguments, 0);
-        return new Promise(function(resolve, reject) {
-            cordova(resolve, reject, pluginName, methodName, args);
-        });
+        var resolve = arguments[0];
+        var reject = arguments[1];
+        var args = Array.prototype.slice.call(arguments, 2);
+        return cordova(resolve, reject, pluginName, methodName, args);
     };
 }
 

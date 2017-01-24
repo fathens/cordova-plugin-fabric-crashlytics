@@ -6,16 +6,16 @@ const plugin = (window as any).plugin;
 const logger = new Logger("Crashlytics");
 
 export interface CrashlyticsClient {
-    log(msg: string): Promise<void>;
-    logException(msg: string): Promise<void>;
-    crash(msg: string): Promise<void>;
-    setBool(key: string, value: boolean): Promise<void>;
-    setDouble(key: string, value: number): Promise<void>;
-    setFloat(key: string, value: number): Promise<void>;
-    setInt(key: string, value: number): Promise<void>;
-    setUserIdentifier(value: string): Promise<void>;
-    setUserName(value: string): Promise<void>;
-    setUserEmail(value: string): Promise<void>;
+    log(resolve, reject, msg: string): Promise<void>;
+    logException(resolve, reject, msg: string): Promise<void>;
+    crash(resolve, reject, msg: string): Promise<void>;
+    setBool(resolve, reject, key: string, value: boolean): Promise<void>;
+    setDouble(resolve, reject, key: string, value: number): Promise<void>;
+    setFloat(resolve, reject, key: string, value: number): Promise<void>;
+    setInt(resolve, reject, key: string, value: number): Promise<void>;
+    setUserIdentifier(resolve, reject, value: string): Promise<void>;
+    setUserName(resolve, reject, value: string): Promise<void>;
+    setUserEmail(resolve, reject, value: string): Promise<void>;
 }
 
 export class Crashlytics {
