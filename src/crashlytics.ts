@@ -1,8 +1,6 @@
 import _ from "lodash";
 import { Logger } from "log4ts";
 
-const plugin = (window as any).plugin;
-
 const logger = new Logger("Crashlytics");
 
 export interface CrashlyticsClient {
@@ -25,6 +23,7 @@ export class Crashlytics {
             return !_.isEqual(typedec, 'undefined');
         }
         if (!Crashlytics._client) {
+            const plugin = (window as any).plugin;
             if (isDef(typeof plugin) && isDef(typeof plugin.Fabric) && isDef(typeof plugin.Fabric.Crashlytics)) {
                 Crashlytics._client = plugin.Fabric.Crashlytics;
             }
