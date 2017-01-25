@@ -8,6 +8,7 @@ var names = [
 "setDouble",
 "setFloat",
 "setInt",
+"setUserEmail",
 "setUserIdentifier",
 "setUserName",
 "logException",
