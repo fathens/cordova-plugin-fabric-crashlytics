@@ -4,16 +4,7 @@ var pluginName = "FabricCrashlyticsPlugin";
 
 var obj = {};
 
-function add_fun(methodName) {
-    obj[methodName] = function() {
-        var args = Array.prototype.slice.call(arguments, 0);
-        return new Promise(function(resolve, reject) {
-            cordova(resolve, reject, pluginName, methodName, args);
-        });
-    }
-}
-
-var names = [
+[
 "log",
 "setBool",
 "setDouble",
@@ -23,10 +14,13 @@ var names = [
 "setUserName",
 "logException",
 "crash"
-];
-
-for (var i = 0; i < names.length; i++) {
-    add_fun(names[i]);
-}
+].forEach(function(methodName) {
+    obj[methodName] = function() {
+        var args = Array.prototype.slice.call(arguments, 0);
+        return new Promise(function(resolve, reject) {
+            cordova(resolve, reject, pluginName, methodName, args);
+        });
+    }
+});
 
 module.exports = obj;
